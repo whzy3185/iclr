@@ -4,6 +4,7 @@
 
 - TASK 0 checkpoint commit: `a66ab9d053d3b33e80f712f4955d4f3ab99839e0`.
 - TASK 1 implementation commit: `cff4e17ad815cb94a44d03d423cc6be535476fc6`.
+- TASK 1 completion/artifact commit: `b82f1e298a9d1303f34d50009129595572a302e8`.
 - Completed: strict JSON/trace schemas; raw-byte/content hashes; injectable
   provider interface; raw-response/failure journals; exclusive result writes;
   cache validation/resume; mock/scientific isolation; normalized-corpus validator.
@@ -22,6 +23,61 @@
 - TASK 2 work allowed now: acquire official year-index metadata and retain source
   provenance; no scientific corpus/intervention freeze until the blockers resolve.
 - TASK 3 and TASK 4: NOT STARTED. No PILOT_LOCK or PILOT_RESULT exists.
+
+## TASK 2 PARTIAL / SCIENTIFIC FREEZE BLOCKED
+
+- Completed: acquired and parsed official ICLR annual title indexes; added
+  source hashes, per-year manifests, and a tested parser/validation CLI.
+- Acquisition counts: 2024 = 2260; 2025 = 3703; 2026 = 5351; total = **11314**.
+- Artifacts: `corpus/acquisition/iclr{2024,2025,2026}-index.jsonl` and matching
+  `-manifest.json` files. Each index row contains year, title, and official
+  abstract-page URL. Raw HTML SHA256 is retained in each manifest.
+- Abstracts acquired: **0**. Topic filtering: not performed. Frozen pilot
+  corpora: **0**. These title indexes must not be used as the promised abstracts.
+- Tests: 27 offline unit tests PASS after adding three annual-index parser tests.
+- Scientific observations: none. The deterministic-retrieval issue in S1 is
+  a specification/design constraint, not an empirical H1 rejection.
+- Blockers: S1 requires a lead-defined across-run exposure/query policy before
+  freezing C1/C2; S2/S3 require frozen measurement/control choices; S4 requires
+  exact models and an authorized local/API execution plan. S5 remains partly
+  open: actual abstract corpora and a fresh P0 collision scan are still needed.
+- Deviations: none; no corpus substitution, generation, parameter tuning,
+  primary-metric change, or post-pilot work has occurred.
+- Next: research lead resolves scientific choices in the canonical spec or
+  configuration; then resume TASK 2. This is **not** the post-pilot DECISION
+  gate. Do not write `Decision: CONTINUE` merely to bypass missing preregistration.
+
+### TASK 2 Exact Commands
+
+Acquisition commands from the parent workspace:
+
+```sh
+curl --silent --show-error --fail --location --connect-timeout 8 --max-time 30 --proxy http://127.0.0.1:10808 https://proceedings.iclr.cc/paper_files/paper/2024 -o work/p0-iclr2024-index.html
+curl --silent --show-error --fail --location --connect-timeout 8 --max-time 30 --proxy http://127.0.0.1:10808 https://proceedings.iclr.cc/paper_files/paper/2025 -o work/p0-iclr2025-index.html
+curl --silent --show-error --fail --location --connect-timeout 8 --max-time 30 --proxy http://127.0.0.1:10808 https://proceedings.iclr.cc/paper_files/paper/2026 -o work/p0-iclr2026-index.html
+```
+
+Parser and tests from repository root:
+
+```sh
+/Users/muelsyse/.local/bin/python3.12 -m experiments.idea_collapse.corpus.index_proceedings --input ../p0-iclr2024-index.html --year 2024 --output experiments/idea_collapse/corpus/acquisition/iclr2024-index.jsonl --manifest experiments/idea_collapse/corpus/acquisition/iclr2024-manifest.json
+/Users/muelsyse/.local/bin/python3.12 -m experiments.idea_collapse.corpus.index_proceedings --input ../p0-iclr2025-index.html --year 2025 --output experiments/idea_collapse/corpus/acquisition/iclr2025-index.jsonl --manifest experiments/idea_collapse/corpus/acquisition/iclr2025-manifest.json
+/Users/muelsyse/.local/bin/python3.12 -m experiments.idea_collapse.corpus.index_proceedings --input ../p0-iclr2026-index.html --year 2026 --output experiments/idea_collapse/corpus/acquisition/iclr2026-index.jsonl --manifest experiments/idea_collapse/corpus/acquisition/iclr2026-manifest.json
+/Users/muelsyse/.local/bin/python3.12 -m unittest discover -s experiments/idea_collapse/tests -v
+```
+
+## Git Transport
+
+The following direct push failed before changing GitHub because the local Git
+credential helper has no usable HTTPS credentials:
+
+```sh
+GIT_TERMINAL_PROMPT=0 git -c http.proxy=http://127.0.0.1:10808 -c http.lowSpeedLimit=1 -c http.lowSpeedTime=20 push -u origin codex/p0-task0-task1
+```
+
+Local commits and evidence remain intact. A connected GitHub-tool publication,
+if successful, will include an explicit local/remote commit mapping rather than
+pretend that server-created commits have the same author/timestamp SHA.
 
 ### TASK 1 Exact Commands
 
