@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "run_purpose": "mock",
+  "domains": ["model_editing"],
+  "conditions": ["topic_only_no_retrieval", "topk_relevance", "diversified_retrieval"],
+  "seeds": [0, 1],
+  "corpus": "experiments/idea_collapse/tests/fixtures/mock_corpus.json",
+  "prompt": "experiments/idea_collapse/configs/prompts/mock.txt",
+  "models": [
+    {"provider": "mock", "family": "fixture_family_a", "version": "mock-family-a-v1", "settings": {"temperature": 0.7, "top_p": 0.95, "max_tokens": 256}},
+    {"provider": "mock", "family": "fixture_family_b", "version": "mock-family-b-v1", "settings": {"temperature": 0.7, "top_p": 0.95, "max_tokens": 256}}
+  ],
+  "retriever": {
+    "kind": "MOCK_ONLY_NOT_A_SCIENTIFIC_RETRIEVER",
+    "fixture_indices": {"topic_only_no_retrieval": [], "topk_relevance": [0, 1], "diversified_retrieval": [0, 2]}
+  },
+  "analysis_config": {"purpose": "mock_schema_validation_only", "scientific_metrics_enabled": false}
+}

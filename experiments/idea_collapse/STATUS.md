@@ -1,11 +1,17 @@
 # P0 Execution Status
 
+## Current: TASK 1 IN PROGRESS
+
+- TASK 0 checkpoint commit: `a66ab9d053d3b33e80f712f4955d4f3ab99839e0`.
+- Offline implementation and 24 unit tests are complete; a persistent mock
+  checkpoint from the committed implementation will follow.
+- Scientific/smoke runs: 0. Live execution remains blocked by S1-S5.
+
 ## TASK 0 COMPLETE
 
 - Current task: TASK 0 repository/specification audit complete; TASK 1 next.
 - Audited Git commit: `f8f1afb681924e8d444c63740b7ef5f86902eeeb`.
-- Checkpoint artifact commit: recorded in the next checkpoint after this commit
-  exists; this document does not fabricate a self-referential Git SHA.
+- Checkpoint artifact commit: `a66ab9d053d3b33e80f712f4955d4f3ab99839e0`.
 - Branch: `codex/p0-task0-task1`.
 - Work completed: read all four canonical files; inspected all tracked files,
   dependencies, Git history, credential presence, and the public proceedings
