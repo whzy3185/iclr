@@ -4,6 +4,34 @@ Audit date: 2026-09-06. Role: experimental engineer and reproducibility guardian
 Audited upstream commit: `f8f1afb681924e8d444c63740b7ef5f86902eeeb`.
 Scientific runs performed: **0**. New primary metrics introduced: **0**.
 
+## Addendum: Research-Lead Updates During Execution
+
+Before closing the checkpoint, `main` advanced to
+`93ebaf74f6d155b017c372211ca6b3078d828b3d`. Both new files were read in full:
+`research/round4_web_experiment_design.md` and
+`experiments/idea_collapse/PRE_RUN_AMENDMENT_A.md`. They were merged without
+editing the lead's text. No scientific output existed before this amendment.
+
+Amendment A requires per-source score/year/ID, source-set mean/median score,
+context token count, and optional topic/cluster and citation/popularity proxies.
+Trace schema v2 adds these fields, retains missing optional values as null, and
+labels unmeasured mock token counts unavailable. C0 has zero context tokens.
+Scientific analysis must reject missing measured context-token provenance.
+Legacy v1 mock evidence remains intact and is not backfilled with invented data.
+
+The lead explicitly retains top-k/MMR as E0. Accordingly **S1 below is now a
+design/interpretation warning, not a demand to replace E0 or a standalone reason
+to block it**. The query-paraphrase schedule still needs freezing, but Codex
+will not invent stochastic MMR or move dose-response experiments into the pilot.
+E0 is insufficient for the final retrieval-causality claim. E1's matched-overlap
+intervention remains behind the user's post-pilot hard gate; this amendment is
+not `Decision: CONTINUE`. MUSES remains out of pilot scope.
+
+Round 4 supplies an updated lead-side collision scan. Its existence is recorded,
+but this engineering audit does not certify every external source. S2/S3
+scientific definitions/control schedules and S4 model/execution choices remain
+unresolved, while S5 still lacks actual frozen abstract corpora.
+
 ## Authority and Existing State
 
 Read, in order, `README.md`, `research/round3_assumption_breaking_analysis.md`,
@@ -115,7 +143,7 @@ leaves an explicit incomplete marker, not a fabricated success.
 
 ## Scientific Ambiguities and Blocking Decisions
 
-### S1: Within-set versus between-run diversity - blocks TASK 2 freeze
+### S1: Within-set versus between-run diversity - initial finding; see addendum
 
 With a fixed corpus, query, encoder, deterministic tie rule, and lambda,
 both top-k and MMR return the same set on every run. Both therefore have

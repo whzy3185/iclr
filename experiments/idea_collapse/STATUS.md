@@ -2,6 +2,17 @@
 
 ## Current: TASK 1 COMPLETE; TASK 2 PARTIAL/BLOCKED
 
+- Latest research-lead source: `93ebaf74f6d155b017c372211ca6b3078d828b3d`.
+- Integrated `PRE_RUN_AMENDMENT_A.md` and Round 4; original P0 and hard gate unchanged.
+- Local amendment implementation commit: `7ba277b723313768b72e14e75c7997547e3e0629`.
+- Latest tests: **28 PASS**, including Amendment A covariates and explicit
+  unavailable mock tokenizer values. Prior checkpoint counts below are historical.
+- Current scientific blockers: unfilled metric/tuple/quality/control definitions
+  and exact model/execution choices in `configs/pilot.draft.json`; actual
+  three-domain abstract corpora are not yet built. No live model calls authorized.
+- S1 is now an E0 interpretation warning, **not** a reason to replace or refuse
+  the lead-retained top-k/MMR baseline. E1/MUSES/selection remain out of scope.
+
 - TASK 0 checkpoint commit: `a66ab9d053d3b33e80f712f4955d4f3ab99839e0`.
 - TASK 1 implementation commit: `cff4e17ad815cb94a44d03d423cc6be535476fc6`.
 - TASK 1 completion/artifact commit: `b82f1e298a9d1303f34d50009129595572a302e8`.
@@ -16,7 +27,7 @@
 - Artifact SHA256: `4018deb94dae1e341a51fb255d89a4c087a53f95032b5300165a649109d5050d`.
 - Scientific execution guard: attempted invocation rejected with exit 2 before
   any provider call/output creation. This was a guard test, not a scientific run.
-- Scientific/smoke runs: 0. Live execution remains blocked by S1-S5.
+- Scientific/smoke runs: 0. See the latest blocker classification above.
 - Deviations: none to the scientific design; mock has a deliberately reduced
   fixture grid and synthetic sources, not a reduced pilot. JSON/stdlib chosen
   conservatively for implementation. No paper or selection framework created.
@@ -39,10 +50,11 @@
 - Tests: 27 offline unit tests PASS after adding three annual-index parser tests.
 - Scientific observations: none. The deterministic-retrieval issue in S1 is
   a specification/design constraint, not an empirical H1 rejection.
-- Blockers: S1 requires a lead-defined across-run exposure/query policy before
-  freezing C1/C2; S2/S3 require frozen measurement/control choices; S4 requires
+- Blockers: the query/paraphrase schedule still requires a frozen definition;
+  S2/S3 require frozen measurement/control choices; S4 requires
   exact models and an authorized local/API execution plan. S5 remains partly
-  open: actual abstract corpora and a fresh P0 collision scan are still needed.
+  open: actual abstract corpora are still needed. Round 4 now supplies an updated
+  lead-side collision scan, without an independent source-verification claim here.
 - Deviations: none; no corpus substitution, generation, parameter tuning,
   primary-metric change, or post-pilot work has occurred.
 - Next: research lead resolves scientific choices in the canonical spec or
@@ -79,8 +91,22 @@ GIT_TERMINAL_PROMPT=0 git -c http.proxy=http://127.0.0.1:10808 -c http.lowSpeedL
 
 The connected GitHub tools created four identical-content-tree commits. See
 `PUBLICATION.md` for local/remote SHA mapping and the retained complete Git
-bundle. Publishing this final transport receipt to the isolated work branch is
-the next administrative action; no scientific scope is unlocked by publication.
+bundle. No scientific scope is unlocked by publishing the transport receipt or
+the subsequent upstream amendment integration.
+
+### Amendment Integration Commands
+
+```sh
+git -c http.proxy=http://127.0.0.1:10808 -c http.lowSpeedLimit=1 -c http.lowSpeedTime=20 fetch origin main
+git show origin/main:research/round4_web_experiment_design.md
+git show origin/main:experiments/idea_collapse/PRE_RUN_AMENDMENT_A.md
+git -c user.name=Codex -c user.email=codex@localhost merge --no-ff origin/main -m 'Integrate research-lead pre-run amendment without unlocking post-pilot work'
+git -c user.name=Codex -c user.email=codex@localhost commit -m 'Add Amendment A covariate provenance without inventing token counts'
+/Users/muelsyse/.local/bin/python3.12 -m unittest discover -s experiments/idea_collapse/tests -v
+```
+
+Result: clean merge, lead text preserved, trace schema v2 tested, 28 tests PASS.
+No E1 dose-response, MUSES retrieval, judge/selection, refinement, or paper work ran.
 
 ### TASK 1 Exact Commands
 
