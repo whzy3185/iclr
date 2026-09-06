@@ -6,90 +6,136 @@ Current date: 2026-09-06.
 
 ## Current decision
 
-The project is **not** pursuing the previous broad candidates (`model editing locality stress`, `multi-turn decomposition`, `causal agent memory`) as P0. A 2026 collision scan found substantial overlap with recent work.
+The project is **not** pursuing the previous broad candidates (`model editing locality stress`, `multi-turn decomposition`, `causal agent memory`) as P0. The later broad framing `Shared-Retrieval Research Monoculture` is also no longer the primary claim; it remains motivation and historical provenance only.
 
-Current P0:
+### Current P0 — scientific-prior steerability
 
-> **Shared-Retrieval Research Monoculture** — test whether literature-grounded LLM ideation pipelines cause population-level research-question convergence because independent runs are exposed to overlapping relevance-ranked literature, and causally identify which pipeline stage drives the loss of diversity.
+> **Can retrieved scientific literature override an LLM's default scientific-method / research-mode prior, and does evidence uptake weaken at higher abstraction levels?**
 
-This is intentionally framed as **failure discovery + causal decomposition**, not as another scientific-agent framework.
+Candidate phenomenon:
 
-## Read order
+> **Grounding without steering** — an LLM may visibly cite and use retrieved scientific concepts while remaining anchored to its no-retrieval prior in high-level methodology or problem framing.
 
-1. [`research/round3_assumption_breaking_analysis.md`](research/round3_assumption_breaking_analysis.md)  
-   Research rationale, ICLR award-paper reverse analysis, collision checks, related-work positioning, P0 selection.
+This is a falsifiable hypothesis, not an assumed result. The opposite result — strong, predictable context steerability — is also a successful scientific branch if supported by controlled evidence.
 
-2. [`experiments/idea_collapse/README.md`](experiments/idea_collapse/README.md)  
-   Pre-registered 24–48h pilot, hypotheses, controls, metrics, kill criteria, and exact Codex implementation contract.
+Why the question changed:
 
-3. [`CODEX_WORKFLOW.md`](CODEX_WORKFLOW.md)  
-   Gated Codex execution prompts, task state machine, anti-p-hacking rules, checkpoint format, and hard scientific stop before mechanism/paper work.
+- ICLR 2025 already reports that changing RAG paper count has little effect on a coarse near-duplicate scientific-idea metric.
+- 2026 work finds frontier LLMs share concentrated default scientific-method choices under research-question-only prompting.
+- ICLR 2025–2026 work on context reliance and `in-context steerability` provides a much stronger ML framing than a broad science-of-science monoculture claim.
 
-## Current hard rule
+## Mandatory read order before any scientific generation
 
-Do **not** write the paper or build a complex agent before the P0 pilot passes.
+1. [`research/iclr_fit_validation/round6_steerability_reframe.md`](research/iclr_fit_validation/round6_steerability_reframe.md)  
+   **Current scientific frame.** Prior-vs-context question, grounding-without-steering hypothesis, controlled framing-mixture design, outcome branches, reviewer attacks.
 
-First decision:
+2. [`experiments/idea_collapse/PRE_RUN_AMENDMENT_C.md`](experiments/idea_collapse/PRE_RUN_AMENDMENT_C.md)  
+   **Current preregistered experimental contract.** No-context prior, matched prior-congruent/counter-prior evidence, mixture dose response, L0–L4 context uptake, statistical gates.
+
+3. [`research/iclr_fit_validation/related_work_matrix.md`](research/iclr_fit_validation/related_work_matrix.md)  
+   Current ICLR/recent collision map and claims we must not make.
+
+4. [`research/iclr_fit_validation/round5_iclr_specific_validation.md`](research/iclr_fit_validation/round5_iclr_specific_validation.md)  
+   Earlier ICLR-specific validation that moved the project from generic RAG diversity to evidence-composition effects.
+
+5. [`experiments/idea_collapse/PRE_RUN_AMENDMENT_B.md`](experiments/idea_collapse/PRE_RUN_AMENDMENT_B.md)  
+   Historical preregistration amendment. Preserved for provenance; Amendment C is the current primary contract.
+
+6. [`experiments/idea_collapse/PRE_RUN_AMENDMENT_A.md`](experiments/idea_collapse/PRE_RUN_AMENDMENT_A.md) and [`experiments/idea_collapse/README.md`](experiments/idea_collapse/README.md)  
+   Original pilot specification and matched-relevance constraint. Read for provenance and reusable infrastructure, but do not treat the old `top-k vs diversified retrieval` contrast as the current primary hypothesis.
+
+7. [`CODEX_WORKFLOW.md`](CODEX_WORKFLOW.md)  
+   Gated execution rules, anti-p-hacking discipline, reproducibility requirements, and hard scientific stop.
+
+## Current experiment state machine
 
 ```text
-P0 pilot
-  ↓
-Does controlled literature exposure affect problem/method-level idea diversity
-across multiple models/areas without obvious quality collapse?
-  ├─ no  → KILL / search next topic
-  └─ yes → mechanism + selection-stage experiments
+P0: NO-CONTEXT PRIOR
+Estimate model-specific scientific research-mode / methodology priors
+        ↓
+P1: MATCHED EVIDENCE INTERVENTION
+Prior-congruent vs counter-prior scientific literature
+        ↓
+P2: FRAMING-MIXTURE DOSE RESPONSE
+0 / 25 / 50 / 75 / 100% matched framing composition
+        ↓
+P3: HIERARCHICAL CONTEXT UPTAKE
+L0 source grounding
+→ L1 concept
+→ L2 method
+→ L3 research mode
+→ L4 problem framing
+        ↓
+P4: CONTROLS
+prompt/order noise, temperature/sampling breadth, model-family interaction
+        ↓
+HARD SCIENTIFIC GATE
+        ├─ strong steerability → CONTINUE-A
+        ├─ grounded but prior-bound → CONTINUE-B
+        └─ trivial/noisy/confounded → KILL
 ```
 
-## Codex handoff
+## Critical experimental rule
 
-Codex should begin by reading:
+Do **not** start a large scientific run until the repository contains and validates:
 
 ```text
-CODEX_WORKFLOW.md
+experiments/idea_collapse/TAXONOMY.md
+experiments/idea_collapse/taxonomy_version.json
+experiments/idea_collapse/corpus_manifest.json
+experiments/idea_collapse/seed_manifest.json
+experiments/idea_collapse/evidence_matching_report.md
+experiments/idea_collapse/preregistered_analysis.json
+experiments/idea_collapse/STATUS.md
 ```
 
-The workflow then sends Codex back to the scientific contract in:
+The universal research-mode taxonomy and evidence matching must be validated **before treatment outcomes are inspected**.
 
-```text
-experiments/idea_collapse/README.md
-```
+## Current hard rules
 
-Expected first outputs:
+- Do not write the paper before the controlled pilot passes.
+- Do not build another end-to-end scientific-agent framework.
+- Do not treat embedding similarity or an LLM novelty judge as primary ground truth.
+- Do not change research-mode categories after seeing treatment effects.
+- Do not weaken relevance in the counter-prior condition to manufacture diversity.
+- Do not pool model families before reporting within-model context effects.
+- Preserve all runs, parse failures, null results, hashes, configs, and deviations.
+- A deadline is not a reason to keep a weak topic.
 
-- frozen ICLR 2024–2026 title/abstract corpora for three areas;
-- `no_retrieval`, `topk_relevance`, and `diversified_retrieval` generations;
-- full retrieval/generation traces;
-- bootstrap confidence intervals for source exposure and idea-diversity differences;
-- problem × method collision analysis;
-- a one-page `PILOT_RESULT.md` ending in `KILL`, `UNCLEAR`, or `CONTINUE` recommendation;
-- a hard stop until the research lead writes `DECISION.md`.
+## Current success branches
 
-## Research discipline
+### A — Strong steerability
 
-Every scientific claim should map to evidence. Every experiment should retain:
+> Matched evidence composition causally and predictably changes high-level scientific problem/method choices, even when coarse duplicate metrics miss the shift.
+
+### B — Grounded but prior-bound
+
+> Retrieved evidence is visibly used at source/concept levels but high-level method/problem choices resist counter-prior evidence, revealing hierarchical context reliance.
+
+### Kill
+
+Kill or substantially pivot if the effect reduces to keyword copying, prompt sensitivity, unmatched relevance, unreliable taxonomy, or a newly discovered direct collision.
+
+## Reproducibility contract
+
+Every scientific output must map to:
 
 ```text
 git commit
 corpus hash
+seed manifest
 prompt hash
-model version
-retriever version
-seed/run id
+model/version
+retriever/version
+evidence-packet IDs and matching diagnostics
+random seed/run ID
+annotation taxonomy/version
 analysis config
 ```
 
-Negative results must remain in the repository.
+Negative results remain in the repository.
 
-## ICLR 2027 timing
-
-Official deadlines currently relevant to this project:
-
-- Abstract submission: **2026-09-18 11:59 PM AoE**
-- Full paper submission: **2026-09-25 11:59 PM AoE**
-
-A deadline is not a reason to keep a weak topic. If the pilot does not produce a clear, robust, scientifically interpretable signal, switch to a quality-first later submission rather than manufacture a paper-shaped result.
-
-Official pages:
+## ICLR 2027 official references
 
 - https://iclr.cc/Conferences/2027/CallForPapers
 - https://iclr.cc/Conferences/2027/ReviewerGuidelines
