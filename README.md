@@ -22,6 +22,9 @@ This is intentionally framed as **failure discovery + causal decomposition**, no
 2. [`experiments/idea_collapse/README.md`](experiments/idea_collapse/README.md)  
    Pre-registered 24–48h pilot, hypotheses, controls, metrics, kill criteria, and exact Codex implementation contract.
 
+3. [`CODEX_WORKFLOW.md`](CODEX_WORKFLOW.md)  
+   Gated Codex execution prompts, task state machine, anti-p-hacking rules, checkpoint format, and hard scientific stop before mechanism/paper work.
+
 ## Current hard rule
 
 Do **not** write the paper or build a complex agent before the P0 pilot passes.
@@ -39,13 +42,17 @@ across multiple models/areas without obvious quality collapse?
 
 ## Codex handoff
 
-Codex should begin from:
+Codex should begin by reading:
+
+```text
+CODEX_WORKFLOW.md
+```
+
+The workflow then sends Codex back to the scientific contract in:
 
 ```text
 experiments/idea_collapse/README.md
 ```
-
-and implement only the reproducible pilot infrastructure specified there.
 
 Expected first outputs:
 
@@ -54,7 +61,8 @@ Expected first outputs:
 - full retrieval/generation traces;
 - bootstrap confidence intervals for source exposure and idea-diversity differences;
 - problem × method collision analysis;
-- a one-page `PILOT_RESULT.md` ending in `KILL` or `CONTINUE`.
+- a one-page `PILOT_RESULT.md` ending in `KILL`, `UNCLEAR`, or `CONTINUE` recommendation;
+- a hard stop until the research lead writes `DECISION.md`.
 
 ## Research discipline
 
