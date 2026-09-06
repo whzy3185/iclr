@@ -2,6 +2,7 @@
 
 import json
 import math
+import statistics
 
 
 IDEA_FIELDS = ("research_question", "claimed_gap", "method_sketch",
@@ -36,14 +37,16 @@ def parse_idea(raw):
                 "parse_error": type(error).__name__}
 
 
-def validate_retrieved(retrieved, condition):
+def validate_retrieved(retrieved, condition, amended=False):
     if condition not in CONDITIONS or not isinstance(retrieved, list):
         raise ValueError("invalid condition/retrieval list")
     if condition == CONDITIONS[0] and retrieved:
         raise ValueError("C0 must contain no retrieved papers")
     seen = set()
     for rank, item in enumerate(retrieved, 1):
-        if set(item) != {"paper_id", "rank", "score", "title", "abstract"}:
+        basic = {"paper_id", "rank", "score", "title", "abstract"}
+        extended = basic | {"year", "cluster_topic_id", "citation_popularity_proxy"}
+        if set(item) not in (basic, extended) or (amended and set(item) != extended):
             raise ValueError("unexpected retrieval fields")
         if item["rank"] != rank or item["paper_id"] in seen:
             raise ValueError("invalid rank or duplicate source")
@@ -51,7 +54,30 @@ def validate_retrieved(retrieved, condition):
             raise ValueError("missing source text/ID")
         if isinstance(item["score"], bool) or not isinstance(item["score"], (int, float)) or not math.isfinite(item["score"]):
             raise ValueError("non-finite retrieval score")
+        if "year" in item and item["year"] not in (2024, 2025, 2026):
+            raise ValueError("missing/out-of-scope source year")
         seen.add(item["paper_id"])
+
+
+def exposure_marginals(retrieved, context_token_count=None, tokenizer=None):
+    scores = [paper["score"] for paper in retrieved]
+    if not retrieved:
+        context_token_count = 0
+    if context_token_count is not None and (type(context_token_count) is not int or context_token_count < 0):
+        raise ValueError("invalid context token count")
+    return {
+        "per_item_scores": scores,
+        "mean_score": statistics.mean(scores) if scores else None,
+        "median_score": statistics.median(scores) if scores else None,
+        "publication_years": [paper["year"] for paper in retrieved],
+        "paper_ids": [paper["paper_id"] for paper in retrieved],
+        "cluster_topic_ids": [paper["cluster_topic_id"] for paper in retrieved],
+        "citation_popularity_proxies": [paper["citation_popularity_proxy"] for paper in retrieved],
+        "context_token_count": context_token_count,
+        "tokenizer": tokenizer,
+        "token_count_status": "no_context" if not retrieved else
+                              ("measured" if context_token_count is not None and tokenizer else "unavailable"),
+    }
 
 
 def validate_trace(trace):
@@ -65,6 +91,11 @@ def validate_trace(trace):
                 "retriever_version", "retriever_config", "retrieved", "prompt",
                 "raw_response", "raw_provider_response", "status", "parse_error",
                 "provider_error", "request_sha256", "request", *IDEA_FIELDS}
+    version = trace.get("trace_schema_version", 1)
+    if version == 2:
+        required |= {"trace_schema_version", "retrieval_marginals"}
+    elif version != 1:
+        raise ValueError("unsupported trace schema version")
     if set(trace) != required:
         raise ValueError("trace schema fields do not match")
     if trace["run_purpose"] not in ("mock", "smoke_test", "scientific_pilot"):
@@ -91,7 +122,12 @@ def validate_trace(trace):
         parsed = parse_idea(trace["raw_response"])
         if parsed["idea"] != {key: trace[key] for key in IDEA_FIELDS}:
             raise ValueError("parsed fields do not match retained raw output")
-    validate_retrieved(trace["retrieved"], trace["condition"])
+    validate_retrieved(trace["retrieved"], trace["condition"], amended=version == 2)
+    if version == 2:
+        marginals = trace["retrieval_marginals"]
+        expected = exposure_marginals(trace["retrieved"], marginals["context_token_count"], marginals["tokenizer"])
+        if expected != marginals:
+            raise ValueError("retrieval marginals differ from retained per-item data")
 
 
 def require_pilot_traces(traces):
@@ -103,3 +139,7 @@ def require_pilot_traces(traces):
             raise ValueError("mock/smoke data cannot enter scientific analysis")
         if trace["model_provider"] == "mock" or trace["model_version_evidence"] == "mock_fixture":
             raise ValueError("mock provider cannot supply scientific evidence")
+        if trace.get("trace_schema_version") != 2:
+            raise ValueError("scientific traces require Amendment A covariates")
+        if trace["retrieval_marginals"]["token_count_status"] == "unavailable":
+            raise ValueError("scientific context tokens have not been measured")

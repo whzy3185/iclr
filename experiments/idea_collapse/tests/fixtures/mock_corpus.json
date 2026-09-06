@@ -1,5 +1,5 @@
 [
-  {"paper_id": "MOCK-PAPER-001", "title": "MOCK TITLE ONE", "abstract": "MOCK ABSTRACT ONE; not a real publication.", "provenance": "MOCK_ONLY"},
-  {"paper_id": "MOCK-PAPER-002", "title": "MOCK TITLE TWO", "abstract": "MOCK ABSTRACT TWO; not a real publication.", "provenance": "MOCK_ONLY"},
-  {"paper_id": "MOCK-PAPER-003", "title": "MOCK TITLE THREE", "abstract": "MOCK ABSTRACT THREE; not a real publication.", "provenance": "MOCK_ONLY"}
+  {"paper_id": "MOCK-PAPER-001", "year": 2024, "title": "MOCK TITLE ONE", "abstract": "MOCK ABSTRACT ONE; not a real publication.", "provenance": "MOCK_ONLY"},
+  {"paper_id": "MOCK-PAPER-002", "year": 2025, "title": "MOCK TITLE TWO", "abstract": "MOCK ABSTRACT TWO; not a real publication.", "provenance": "MOCK_ONLY"},
+  {"paper_id": "MOCK-PAPER-003", "year": 2026, "title": "MOCK TITLE THREE", "abstract": "MOCK ABSTRACT THREE; not a real publication.", "provenance": "MOCK_ONLY"}
 ]

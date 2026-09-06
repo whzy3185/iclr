@@ -10,7 +10,7 @@ from pathlib import Path
 from .provenance import (canonical_bytes, code_hash, export_jsonl, file_hash,
                          git_state, input_path, object_hash, write_exclusive)
 from .providers import MockProvider, ProviderFailure
-from .schema import CONDITIONS, IDEA_FIELDS, parse_idea, strict_json, validate_retrieved, validate_trace
+from .schema import CONDITIONS, IDEA_FIELDS, exposure_marginals, parse_idea, strict_json, validate_retrieved, validate_trace
 
 
 def execute_request(request, provider, directory, dirty=False):
@@ -91,7 +91,7 @@ def run_mock(config_path, output_root):
     base_prompt = prompt_path.read_text(encoding="utf-8")
     analysis = config["analysis_config"]
     git = git_state()
-    common = {"run_purpose": "mock", "git_commit": git["git_commit"],
+    common = {"trace_schema_version": 2, "run_purpose": "mock", "git_commit": git["git_commit"],
               "code_sha256": code_hash(), "config_sha256": file_hash(config_path),
               "corpus_sha256": file_hash(corpus_path), "base_prompt_sha256": file_hash(prompt_path),
               "analysis_config": analysis, "analysis_config_sha256": object_hash(analysis),
@@ -108,9 +108,10 @@ def run_mock(config_path, output_root):
                 indices = config["retriever"]["fixture_indices"][condition]
                 retrieved = [{"paper_id": corpus[i]["paper_id"], "rank": rank,
                               "score": 1 / rank, "title": corpus[i]["title"],
-                              "abstract": corpus[i]["abstract"]}
+                              "abstract": corpus[i]["abstract"], "year": corpus[i]["year"],
+                              "cluster_topic_id": None, "citation_popularity_proxy": None}
                              for rank, i in enumerate(indices, 1)]
-                validate_retrieved(retrieved, condition)
+                validate_retrieved(retrieved, condition, amended=True)
                 context = "\n\n".join(f"[{p['paper_id']}] {p['title']}\n{p['abstract']}" for p in retrieved)
                 prompt = base_prompt + "\nResearch area: " + domain
                 if context:
@@ -120,6 +121,7 @@ def run_mock(config_path, output_root):
                                "model_provider": model["provider"], "model_family": model["family"],
                                "model_version": model["version"], "generation_settings": model["settings"],
                                "retrieval_query": domain, "retrieved": retrieved, "prompt": prompt,
+                               "retrieval_marginals": exposure_marginals(retrieved),
                                "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest()}
                     records.append(execute_request(request, provider, directory, git["git_dirty"]))
     export_jsonl(records, directory / "traces.jsonl")

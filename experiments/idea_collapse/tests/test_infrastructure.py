@@ -12,7 +12,7 @@ from experiments.idea_collapse.generation.provenance import (
 from experiments.idea_collapse.generation.providers import MockProvider, OpenAICompatibleProvider, ProviderFailure
 from experiments.idea_collapse.generation.run import execute_request, run_mock
 from experiments.idea_collapse.generation.schema import (
-    CONDITIONS, IDEA_FIELDS, parse_idea, require_pilot_traces, validate_retrieved, validate_trace,
+    CONDITIONS, IDEA_FIELDS, exposure_marginals, parse_idea, require_pilot_traces, validate_retrieved, validate_trace,
 )
 
 
@@ -86,6 +86,19 @@ class InfrastructureTests(unittest.TestCase):
     def test_retrieval_roundtrip(self):
         rows = [{"paper_id": "MOCK", "rank": 1, "score": 0.4, "title": "t", "abstract": "a"}]
         validate_retrieved(json.loads(canonical_bytes(rows)), CONDITIONS[1])
+
+    def test_amendment_marginals_and_unknown_tokens(self):
+        rows = [{"paper_id": "MOCK", "rank": 1, "score": 0.4, "title": "t", "abstract": "a",
+                 "year": 2024, "cluster_topic_id": None, "citation_popularity_proxy": None}]
+        validate_retrieved(rows, CONDITIONS[1], amended=True)
+        result = exposure_marginals(rows)
+        self.assertEqual(result["mean_score"], 0.4)
+        self.assertEqual(result["median_score"], 0.4)
+        self.assertEqual(result["publication_years"], [2024])
+        self.assertIsNone(result["context_token_count"])
+        self.assertEqual(result["token_count_status"], "unavailable")
+        self.assertEqual(exposure_marginals([])["context_token_count"], 0)
+        self.assertEqual(exposure_marginals(rows, 12, "fixture-tokenizer-v1")["token_count_status"], "measured")
 
     def test_c0_rejects_context(self):
         with self.assertRaises(ValueError):
@@ -212,9 +225,13 @@ class InfrastructureTests(unittest.TestCase):
         self.assertEqual(second["provider_calls"], 0)
         rows = [json.loads(line) for line in (self.root / "mock/traces.jsonl").read_text().splitlines()]
         for row in rows:
+            self.assertEqual(row["trace_schema_version"], 2)
             if row["condition"] == CONDITIONS[0]:
                 self.assertNotIn("MOCK ABSTRACT", row["prompt"])
                 self.assertEqual(row["retrieved"], [])
+                self.assertEqual(row["retrieval_marginals"]["token_count_status"], "no_context")
+            else:
+                self.assertEqual(row["retrieval_marginals"]["token_count_status"], "unavailable")
             self.assertEqual(row["run_purpose"], "mock")
         self.assertEqual(len({r["model_family"] for r in rows}), 2)
 
