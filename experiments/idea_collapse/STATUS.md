@@ -26,6 +26,8 @@
 
 ## TASK 2 PARTIAL / SCIENTIFIC FREEZE BLOCKED
 
+- Local implementation/artifact commit: `2aae88fcf04fcf0436103c1c748a91d5b1e85bcc`.
+- Identical-tree GitHub commit: `d88227ece16206e9a309d9a98d64053ba6691fbc`.
 - Completed: acquired and parsed official ICLR annual title indexes; added
   source hashes, per-year manifests, and a tested parser/validation CLI.
 - Acquisition counts: 2024 = 2260; 2025 = 3703; 2026 = 5351; total = **11314**.
@@ -75,9 +77,10 @@ credential helper has no usable HTTPS credentials:
 GIT_TERMINAL_PROMPT=0 git -c http.proxy=http://127.0.0.1:10808 -c http.lowSpeedLimit=1 -c http.lowSpeedTime=20 push -u origin codex/p0-task0-task1
 ```
 
-Local commits and evidence remain intact. A connected GitHub-tool publication,
-if successful, will include an explicit local/remote commit mapping rather than
-pretend that server-created commits have the same author/timestamp SHA.
+The connected GitHub tools created four identical-content-tree commits. See
+`PUBLICATION.md` for local/remote SHA mapping and the retained complete Git
+bundle. Publishing this final transport receipt to the isolated work branch is
+the next administrative action; no scientific scope is unlocked by publication.
 
 ### TASK 1 Exact Commands
 
