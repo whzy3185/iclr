@@ -1,130 +1,76 @@
-# CODEX F0 MASTER — Source-Only Feasibility Audit
+# CODEX F0 MASTER — Source-Only Feasibility Audit v2
 
-> Status: **AUTHORIZED NOW**
-> Scope: **F0 SOURCE-ONLY FEASIBILITY**
-> Scientific proposal generation: **FORBIDDEN**
 > Repository: `whzy3185/iclr`
+> Stage: F0 SOURCE-ONLY FEASIBILITY
+> Scientific proposal generation: FORBIDDEN
+> Engineering launcher: `CODEX_F0_EXECUTION_PROMPT.md`
+> Gate-policy authority: `research/iclr_fit_validation/round51_hard_gate_and_workflow_audit.md`
 
-This file is the single operational handoff for Codex F0. It consolidates `CODEX_FEASIBILITY_TASK_1.md` and Amendments A/B/C. Historical files remain for provenance, but when wording conflicts for F0 execution, this file wins.
+## 0. Scientific purpose
 
-## 0. Objective
+F0 does not test the paper hypothesis and does not decide whether the project should continue.
 
-Determine whether the proposed ICLR causal experiment is constructible from real, temporally auditable ICLR literature **before any scientific model outcomes are generated**.
+F0 maps whether real ICLR 2025/2026 literature can support auditable multi-route matched-evidence blocks before any scientific model outputs exist.
 
-The later experiment asks whether matched scientific evidence composition changes an LLM's high-level research choice and whether that response depends on the model's independently measured baseline route propensity. F0 does **not** test that scientific hypothesis.
+The later scientific question is about evidence-conditioned research-choice response and its interaction with independently measured baseline route propensity. None of that is estimated in F0.
 
-F0 answers only:
+## 1. Hard invariants
 
-> Can we build enough valid, multi-route, relevance-matched, pairwise matched ICLR evidence blocks to justify running the experiment?
+The following are non-negotiable:
 
-## 1. Read order
+1. no research-proposal generation in F0;
+2. no baseline-propensity estimation;
+3. no treatment-effect estimation;
+4. no outcome-dependent seed/route/retrieval/matching decisions;
+5. no off-topic evidence to manufacture route contrast;
+6. preserve every denominator, exclusion, ambiguity, and matching failure;
+7. no invented human ratings;
+8. treatment construction must eventually be frozen before baseline scientific generations;
+9. LLM-assisted source labels remain provisional until human audit;
+10. Codex cannot authorize F1/P0.
 
-Read before implementation:
+## 2. Source universe
 
-1. `README.md`
-2. `CODEX_F0_MASTER.md`
-3. `research/iclr_fit_validation/round27_route_equipoise_and_admissibility_audit.md`
-4. `research/iclr_fit_validation/round30_seed_validity_method_masking_and_accessibility.md`
-5. `research/iclr_fit_validation/round33_staged_execution_and_hard_gates.md`
-6. `research/iclr_fit_validation/round40_data_schema_reproducibility_and_analysis_freeze.md`
-7. `research/iclr_fit_validation/round44_pairwise_matched_evidence_slot_design.md`
-8. `research/iclr_fit_validation/round46_source_route_purity_and_mixed_contribution_handling.md`
-9. `research/iclr_fit_validation/round47_lit2test_collision_and_prompt_neutrality_update.md`
-10. historical `CODEX_FEASIBILITY_TASK_1.md` + Amendments A/B/C only as provenance/details if needed.
-
-## 2. Hard prohibition
-
-During F0 you MUST NOT:
-
-- generate research proposals/ideas with any LLM;
-- run no-context scientific proposal generation;
-- estimate baseline route propensity from model generations;
-- run evidence-conditioned scientific generation;
-- inspect or estimate treatment effects;
-- optimize route definitions, matching thresholds, or seed selection using imagined/model outcomes;
-- write paper results or an abstract as though a phenomenon has been observed;
-- use an LLM novelty/quality score as ground truth.
-
-Allowed:
-
-- metadata/data ingestion;
-- deterministic preprocessing;
-- embeddings/rerankers for source relevance;
-- source-paper classification/annotation tooling;
-- LLM-assisted source annotation only as provisional labels with preserved raw text and human-audit packets;
-- paper-ID-only packet simulations.
-
-## 3. Source universe
-
-### Evidence
-
-Primary universe: ICLR 2025 accepted papers.
-
-For the temporal-clean shared subset, prefer evidence first public after `2024-08-31`, recording earlier versions explicitly.
-
-Minimum fields:
+Primary source universes:
 
 ```text
-paper_id
-title
-abstract
-iclr_year
-proceedings_url/openreview_url
-first_public_date
-earlier_public_version_found
-temporal_status
-token_length
-fine_route_label_provisional
-route_purity
-secondary_routes
-coarse_contribution_family_provisional
-annotation_confidence
+Evidence: ICLR 2025 accepted papers
+Seeds/focal problems: ICLR 2026 accepted papers
 ```
 
-Temporal status must allow `UNKNOWN`; never fabricate dates.
+Official proceedings defines denominators.
 
-### Seeds
+Every normalized paper record should retain source URLs, hashes, title, abstract, metadata, and acquisition failures.
 
-Candidate seeds: ICLR 2026 accepted papers.
+## 3. Temporal map
 
-Produce method-masked research questions/problem statements without solving them.
+Do not reduce F0 to one automatic cutoff pass/fail.
 
-For each seed record:
+Report at least:
 
 ```text
-seed_id
-focal_paper_id
-subfield
-raw_problem_context
-method_masked_question
-removed_solution_tokens/entities
-focal_first_public_date
-problem_clarity
-background_sufficiency
-method_neutrality
-multi_route_openness
-technical_substance
-iclr_relevance
-focal_method_leak
-solution_prescribed
-distinctive_phrase_leak
-too_broad
-too_narrow
-post_cutoff_concept_needs_definition
+T0_COMMON_STRICT: first public > 2024-08-31
+T1_LLAMA_CLEANER: first public > 2023-12-31
+T2_ALL_ACCEPTED: all ICLR 2025, contamination-uncertain
 ```
 
-Leakage diagnostics:
+Statuses must include UNKNOWN/AMBIGUOUS; never fabricate dates.
 
-- seed-to-focal-title lexical similarity;
-- seed-to-focal-abstract similarity;
-- distinctive n-gram/acronym overlap;
-- removed method/entity strings.
+Final scientific temporal tier is chosen by research lead before model outcomes.
 
-Do not use the focal paper's method as a gold answer.
+## 4. Seed construction
 
-## 4. Route system
+Create source-grounded method-masked ICLR 2026 research questions.
 
-Audit the predeclared fine route contrasts first:
+Remove focal solution/method identifiers while preserving the scientific problem and enough context for multiple plausible routes.
+
+Preserve all candidate seeds with leakage/clarity/status metadata and emit a human-audit packet.
+
+Do not solve the seeds.
+
+## 5. Route system
+
+Always audit:
 
 ```text
 R1 BUILD_IMPROVE        vs DIAGNOSE_STRESS_TEST
@@ -133,17 +79,11 @@ R3 BUILD_IMPROVE        vs EXPLAIN_MECHANISM_THEORY
 R4 DIAGNOSE_STRESS_TEST vs EXPLAIN_MECHANISM_THEORY
 ```
 
-Do not drop an R1–R4 pair because coverage is poor. Poor coverage is an F0 result.
+Source papers may have primary + secondary routes and mixedness.
 
-For each source paper record:
+Fine labels are provisional source descriptors.
 
-- primary fine route;
-- optional secondary routes;
-- route purity/mixedness;
-- opposite-route contamination where relevant;
-- confidence.
-
-Also record the external coarse contribution-family robustness axis:
+Also report the external coarse contribution axis:
 
 ```text
 ARTIFACT
@@ -152,244 +92,206 @@ BOTH
 UNCLEAR
 ```
 
-Do not claim this coarse taxonomy as ours.
+## 6. Route-purity sensitivity
 
-## 5. Retrieval and relevance
+Do not treat a model/parser confidence value as calibrated scientific truth.
 
-For every seed:
-
-1. retrieve a generous source-only candidate pool from the frozen evidence corpus;
-2. compute frozen dense relevance;
-3. add an independent reranker score if practical;
-4. preserve all candidates and scores;
-5. attach provisional source-route labels;
-6. never alter the seed query based on route labels or model outcomes.
-
-Freeze retrieval/reranker versions/configs and hashes.
-
-## 6. Seed-route equipoise / admissibility
-
-For each promising `seed × route pair`, prepare a human audit row with neutral, source-derived route descriptions and representative evidence.
-
-Blank human fields must include:
+Report source-feasibility sensitivity at:
 
 ```text
-A_RELEVANCE_TO_SEED 1–5
-B_RELEVANCE_TO_SEED 1–5
-A_SCIENTIFIC_PLAUSIBILITY 1–5
-B_SCIENTIFIC_PLAUSIBILITY 1–5
-DISTINGUISHABILITY 1–5
-EQUIPOISE 1–5
-NON_SUBSUMPTION 1–5
-ANNOTATABILITY 1–5
-COMPOSABILITY 1–5
-ROUTE_DOMINANCE
+route_purity >= .60 / .70 / .80
 ```
 
-Codex prepares the packet but does not invent human ratings.
+Human F1 review determines which contrasts/papers are actually route-clear.
 
-Also record provisional pair type:
+## 7. Retrieval
 
-```text
-TYPE_I_COMPETING_STRATEGIC
-TYPE_II_COMPETING_EPISTEMIC
-TYPE_III_COMPLEMENTARY_HIGH_COMPOSABILITY
-TYPE_IV_HIERARCHICAL_OR_SUBSUMED
-UNCLEAR
-```
+Use a frozen open dense retriever and, when practical, an independent reranker.
 
-Do not silently remove hierarchical/high-composability cases; report them.
+Preserve exact model revisions/configuration and all candidate scores.
 
-## 7. Pairwise matched evidence slots — primary F0 object
+Seed query text must not be altered using route labels.
 
-For every promising block, attempt to create:
+## 8. Pairwise matched evidence slots
+
+Primary F0 object:
 
 ```text
 slot_j = (A_paper_j, B_paper_j)
 ```
 
-A/B must differ in scientific route while being matched on frozen source-only covariates.
+A/B differ in scientific route while being similar on source-only covariates such as relevance, reranker score, length, public date, and topic.
 
-Required matching variables:
+Use deterministic matching without replacement.
 
-```text
-dense relevance
-reranker relevance if available
-abstract token length
-first-public date / time distance
-topic embedding/cluster distance
-```
+Report full matching failures and match-cost distributions.
 
-Use a deterministic source-only algorithm such as minimum-cost bipartite matching, optimal matching, or deterministic nearest-neighbor without replacement.
+## 9. Matching sensitivity, not automatic pass/fail
 
-Record:
-
-- matching cost definition;
-- hard calipers;
-- deterministic tie breaks;
-- unmatched papers/reasons;
-- code/config/hash.
-
-Never tune matching weights against future treatment outcomes.
-
-For every `seed × route pair` report:
+Evaluate predeclared diagnostic matching tiers:
 
 ```text
-n_A_above_floor
-n_B_above_floor
-max_matched_slots_under_calipers
-median_match_cost
-p90_match_cost
-max_match_cost
-matched_relevance_difference
-matched_length_difference
-matched_date_difference
-matched_topic_distance
+STRICT
+BASE
+RELAXED
 ```
 
-Audit support at:
+Exact numeric calipers are defined in `CODEX_F0_EXECUTION_PROMPT.md`.
+
+These tiers map the coverage–balance frontier. They do not by themselves decide scientific feasibility.
+
+## 10. Packet-size sensitivity
+
+Report matched-slot coverage at:
 
 ```text
-k = 6
-k = 8
-k = 12
+k = 4 / 6 / 8 / 12
 ```
 
-Do not force one k; report coverage at all three.
+Final scientific k is chosen after F0/F1 and before scientific outcomes.
 
-## 8. Packet feasibility simulation
+k=4/8/12 permit exact quarter mixtures; k=6 is an intermediate source-coverage diagnostic.
 
-Paper-ID-only packet simulations are allowed.
+## 11. Equipoise preparation
 
-Using the same matched-slot bank, simulate source-only assignments at:
+For source-supported seed × route-pair blocks, create human-review packets covering:
 
-```text
-alpha = 0, .25, .5, .75, 1
-```
+- relevance to seed;
+- scientific plausibility;
+- distinguishability;
+- equipoise;
+- non-subsumption;
+- annotatability;
+- composability;
+- route dominance.
 
-Prefer balanced/complementary assignments so middle alpha conditions do not systematically privilege particular slot identities.
+Codex leaves human ratings blank.
 
-Check balance across alpha on:
+## 12. Required F0 scorecard
 
-- relevance;
-- total tokens;
-- public dates;
-- topic distance/coverage;
-- route purity.
+F0 must produce a multidimensional source map rather than a single automatic scientific verdict.
 
-No scientific generation may be called.
+### Coverage
 
-## 9. Multi-route coverage
+- unique seeds with >=2 routes;
+- >=3 route coverage;
+- k=4/6/8/12 matched-slot counts;
+- route-pair distribution;
+- subfield distribution;
+- packet-realization capacity.
 
-For every seed report:
+### Balance
 
-```text
-n_supported_routes
-eligible_3plus_routes_provisional
-best_triplet_if_any
-triplet_min_evidence_count
-triplet_matchability_status
-```
+- relevance differences;
+- reranker differences;
+- token-length differences;
+- date differences;
+- topic-distance distributions;
+- matching cost.
 
-This evaluates whether a future three-route simplex extension is even possible. Do not prioritize three-route seeds over valid two-route seeds in the core F0 decision.
+### Construct risk
 
-## 10. Required lexical/purity diagnostics
+- seed leakage;
+- route ambiguity;
+- route purity;
+- lexical shortcut strength;
+- hierarchical/subsumed route pairs;
+- composability.
 
-For source-route annotation:
+### Temporal risk
 
-- test a simple lexical/keyword classifier for both coarse and fine labels;
-- report route-label ambiguity;
-- report route-purity distribution;
-- report how much coverage is lost when restricting to route-clear papers.
+- T0/T1/T2 coverage;
+- UNKNOWN/AMBIGUOUS rates;
+- subfield attrition.
 
-High lexical predictability is not automatically fatal, but it must be flagged as future priming risk.
+### Concentration
 
-## 11. Required outputs
+- subfield concentration;
+- route-pair concentration;
+- attrition waterfall.
 
-Create/update under:
+## 13. Required artifacts
+
+Under:
 
 ```text
 experiments/idea_collapse/feasibility_1/
 ```
 
-At minimum:
+create at minimum:
 
 ```text
 README.md
 STATUS.md
-corpus_manifest.jsonl
+MIGRATION_LOG.md
+raw_sources_manifest.jsonl
+iclr2025_papers.jsonl
+iclr2026_papers.jsonl
+acquisition_failures.jsonl
 corpus_hash.txt
-seed_candidates.jsonl
-retrieval_config.json
-route_label_summary.json
-route_pair_coverage.csv
-route_pair_matchability.csv
-matched_evidence_slots.csv
-packet_balance_simulation.csv
-multi_route_coverage.csv
-attrition_waterfall.csv
-seed_validity_audit_packet.csv
-route_equipoise_audit_packet.csv
-route_annotation_audit_packet.csv
-matching_diagnostics/
+temporal_cleanliness.jsonl
 temporal_cleanliness_report.md
+seed_candidates.jsonl
+seed_validity_audit_packet.csv
+retrieval_config.json
+retrieval_candidates.parquet or .jsonl
+source_route_annotations.jsonl
+route_label_summary.json
+route_annotation_audit_packet.csv
+lexical_route_baseline.json
+route_pair_coverage.csv
+multi_route_coverage.csv
+matched_evidence_slots.csv
+matching_diagnostics/
+route_equipoise_audit_packet.csv
+packet_balance_simulation.csv
+attrition_waterfall.csv
+coverage_balance_frontier.csv
 FEASIBILITY_RESULT.md
 ```
 
-## 12. Attrition waterfall
+## 14. F0 final status
 
-`FEASIBILITY_RESULT.md` must explicitly show:
-
-```text
-ICLR 2026 focal candidates
-→ extractable method-masked seeds
-→ seed validity/leakage pass candidates
-→ multi-route-open candidates
-→ >=2 source-supported routes
-→ relevance-matchable route pairs
-→ >=6 / >=8 / >=12 pairwise matched-slot banks
-→ source-feasible blocks awaiting human equipoise
-→ potential final experimental blocks
-```
-
-No candidate may disappear silently.
-
-## 13. FEASIBILITY_RESULT questions
-
-Answer, without scientific outcomes:
-
-1. How many candidate seeds were audited?
-2. How many unique seeds have >=2 supported routes?
-3. How many have >=3 supported routes?
-4. How many unique seeds have at least one route pair with >=6, >=8, >=12 matched slots?
-5. Coverage by R1–R4 and by subfield?
-6. Does pairwise slot matching materially reduce coverage vs loose packet-level matching?
-7. Are route-clear papers sufficient after purity filtering?
-8. Are A/B evidence relevance/matching distributions comparable enough for a paired causal design?
-9. Is the coarse Artifact/Knowledge distinction easier to audit than the fine route taxonomy?
-10. What is the dominant failure mode: seed leakage, route sparsity, relevance mismatch, temporal uncertainty, mixed-route contamination, equipoise/composability, or matching calipers?
-11. Does the universe support multiple packet realizations per block?
-12. Recommendation: one of:
+Codex reports only one engineering state:
 
 ```text
-SOURCE_FEASIBLE_BROAD
-SOURCE_FEASIBLE_NARROW
-MARGINAL
-NOT_FEASIBLE
+F0_COMPLETE
+F0_INCOMPLETE
+F0_BLOCKED
 ```
 
-This recommendation is about constructibility only.
+`FEASIBILITY_RESULT.md` must explicitly state:
 
-## 14. Stop condition
+```text
+SCIENTIFIC_DECISION = RESEARCH_LEAD_REQUIRED
+SCIENTIFIC_GENERATIONS_PERFORMED = 0
+```
 
-After `FEASIBILITY_RESULT.md` and the source-only artifacts are complete, STOP.
+Do not output an automatic BROAD/NARROW/MARGINAL/NOT_FEASIBLE scientific classification.
 
-Do not run:
+## 15. Engineering hard-stop conditions
 
-- P0 baseline generations;
-- scientific proposal generations;
-- evidence-conditioned generations;
-- treatment-outcome annotations;
+F0 may stop as BLOCKED only if an auditable source map cannot be produced, e.g.:
+
+- official denominator cannot be established;
+- acquisition missingness cannot be characterized;
+- provenance/hashing is unreliable;
+- deterministic retrieval/matching cannot be implemented;
+- required artifacts would require violating F0 prohibitions.
+
+Low source counts are not an engineering blocker. They are a result for research-lead review.
+
+## 16. Stop condition
+
+After complete source-only artifacts and `FEASIBILITY_RESULT.md`, STOP.
+
+Do not start:
+
+- F1 human adjudication beyond packet preparation;
+- P0 baseline generation;
+- scientific proposal generation;
+- treatment generation;
+- scientific outcome annotation;
 - paper-result writing.
 
-The research lead will review F0 and decide whether P0 scientific generation is authorized.
+The research lead reviews F0 and writes the next-stage authorization.
