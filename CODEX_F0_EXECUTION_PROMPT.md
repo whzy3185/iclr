@@ -1,8 +1,8 @@
-# CODEX F0 EXECUTION PROMPT — Engineering Contract
+# CODEX F0 EXECUTION PROMPT — Engineering Contract v2
 
 > Repository: `whzy3185/iclr`
 > Authority: **this file is the Codex launcher for F0 execution**
-> Scientific authority: `CODEX_F0_MASTER.md`
+> Scientific authority: `CODEX_F0_MASTER.md` + `research/iclr_fit_validation/round51_hard_gate_and_workflow_audit.md`
 > Status: **AUTHORIZED**
 > Scientific proposal generation: **FORBIDDEN**
 > Expected branch: `codex/f0-source-feasibility`
@@ -11,21 +11,31 @@
 
 Execute a source-only feasibility audit for the current ICLR experiment.
 
-You are not testing the scientific hypothesis. You are determining whether the real ICLR 2025/2026 literature can support enough temporally auditable, multi-route, relevance-matched, pairwise-matched evidence blocks to justify a later controlled LLM experiment.
+You are not testing the scientific hypothesis and you are not deciding whether the paper should continue.
 
-The sole final scientific-engineering question for this task is:
+Your job is to produce a complete, reproducible map of whether the real ICLR 2025/2026 literature can support multi-route, relevance-matched, pairwise-matched evidence blocks under several predeclared source-only design regimes.
 
-> **Can the source universe support a broad enough bank of valid `seed × route-pair` blocks with `k=6/8/12` pairwise matched A/B evidence slots, without using any research-proposal outcomes?**
+The research lead will make the scientific decision after reviewing your artifacts.
 
-Do not generate research ideas/proposals in F0.
+Final F0 output state is only one of:
+
+```text
+F0_COMPLETE
+F0_INCOMPLETE
+F0_BLOCKED
+```
+
+Do **not** output `SOURCE_FEASIBLE_BROAD/NARROW/MARGINAL/NOT_FEASIBLE` as an automatic decision in v2.
 
 ---
 
 # 1. Branch and synchronization contract
 
-Start from the latest remote `main`. Do **not** continue the stale branch `codex/p0-task0-task1`.
+Start from latest remote main.
 
-Required startup commands, adapting only transport details if necessary:
+Do not continue `codex/p0-task0-task1`.
+
+Required startup sequence, adapting transport details only when necessary:
 
 ```bash
 git fetch origin main codex/p0-task0-task1
@@ -33,28 +43,115 @@ git switch --detach origin/main
 git switch -c codex/f0-source-feasibility
 ```
 
-Record immediately in:
+Immediately create/update:
 
 ```text
 experiments/idea_collapse/feasibility_1/STATUS.md
 ```
 
-- `origin/main` SHA;
-- new branch SHA;
-- old Codex branch SHA;
-- Python version;
-- OS/platform;
-- available CPU/GPU/MPS;
-- network availability;
-- dependency manager.
+Record:
 
-## Never merge the old Codex branch wholesale
+```text
+origin_main_sha
+branch_start_sha
+old_codex_branch_sha
+python_version
+platform
+cpu_gpu_mps
+network_status
+dependency_manager
+```
 
-The old branch implemented an obsolete top-k/MMR/540-idea study. It is not scientifically authoritative.
+---
 
-### Old-branch migration allowlist
+# 2. Authority and read order
 
-You MAY reuse/reimplement from `origin/codex/p0-task0-task1` only after inspecting the code:
+Read before implementation:
+
+1. `README.md`
+2. `CODEX_F0_EXECUTION_PROMPT.md`
+3. `CODEX_F0_MASTER.md`
+4. `research/iclr_fit_validation/round51_hard_gate_and_workflow_audit.md`
+5. `research/iclr_fit_validation/round27_route_equipoise_and_admissibility_audit.md`
+6. `research/iclr_fit_validation/round30_seed_validity_method_masking_and_accessibility.md`
+7. `research/iclr_fit_validation/round33_staged_execution_and_hard_gates.md`
+8. `research/iclr_fit_validation/round40_data_schema_and_preregistered_analysis_contract.md`
+9. `research/iclr_fit_validation/round44_pairwise_matched_evidence_slot_design.md`
+10. `research/iclr_fit_validation/round45_balanced_packet_randomization_design.md`
+11. `research/iclr_fit_validation/round46_source_route_purity_and_multilabel_exposure.md`
+12. `research/iclr_fit_validation/round50_codex_branch_pi_audit.md`
+
+Priority for F0 conflicts:
+
+```text
+this file
+> round51 hard-gate audit
+> CODEX_F0_MASTER.md
+> latest round files
+> historical tasks/amendments
+```
+
+If a referenced file is absent/renamed, record the mismatch. Do not invent a replacement requirement.
+
+---
+
+# 3. Non-negotiable hard gates
+
+These are true hard gates and must not be relaxed.
+
+## H1 — no scientific outcomes in F0
+
+Forbidden:
+
+- research proposal generation;
+- no-context scientific idea generation;
+- evidence-conditioned scientific idea generation;
+- baseline route-propensity estimation;
+- treatment-effect estimation;
+- scientific outcome annotation;
+- paper-result writing.
+
+## H2 — no outcome-dependent source construction
+
+Do not use any model proposal outcome to alter:
+
+- seed masking;
+- route definitions;
+- retrieval;
+- route filters;
+- matching;
+- packet size;
+- packet composition;
+- calipers;
+- temporal tier.
+
+## H3 — denominator preservation
+
+No paper/seed/route pair/matching failure may disappear silently.
+
+Every exclusion requires a machine-readable reason.
+
+## H4 — no off-topic evidence to manufacture a contrast
+
+Do not lower topical relevance simply to create route diversity.
+
+## H5 — no invented human labels
+
+Human-audit columns remain blank until actual human review.
+
+## H6 — no automatic scientific continue/kill decision
+
+Codex reports source facts and engineering status only.
+
+The research lead decides F1/P0 authorization.
+
+---
+
+# 4. Old-branch migration policy
+
+Never merge `codex/p0-task0-task1` wholesale.
+
+Allowed migration candidates after inspection:
 
 ```text
 experiments/idea_collapse/generation/provenance.py
@@ -62,121 +159,47 @@ experiments/idea_collapse/corpus/index_proceedings.py
 experiments/idea_collapse/tests/test_index.py
 ```
 
-You MAY additionally reuse small pure utility functions for:
+Additional pure utilities may be reimplemented only for:
 
-- canonical JSON serialization;
-- SHA256 hashing;
-- exclusive/immutable writes;
-- Git-state recording;
-- strict JSON parsing;
+- canonical JSON;
+- SHA256;
+- immutable/exclusive writes;
+- Git-state capture;
+- strict JSON parsing.
 
-only if they contain no old scientific assumptions.
+Forbidden as authoritative logic:
 
-### Explicitly forbidden to migrate as authoritative scientific logic
-
-Do not migrate or reuse without a complete rewrite/review:
-
-```text
-old pilot configs
-old top-k/MMR condition logic
-old 3-domain hard-coded corpus schema
-old 540-generation design
-old diversity metrics as primary F0 logic
-old scientific generation runner/provider configuration
-old PILOT_LOCK/PILOT_RESULT logic
-```
+- old top-k/MMR study arms;
+- old fixed 3-domain schema;
+- old 540-generation design;
+- old pilot configs;
+- old diversity metrics as F0 criteria;
+- old generation/provider configs;
+- old pilot lock/result decision logic.
 
 Create:
 
 ```text
-experiments/idea_collapse/feasibility_1/MIGRATION_LOG.md
+feasibility_1/MIGRATION_LOG.md
 ```
 
-For every reused old-branch file/function record:
+For every reused function/file record:
 
 ```text
-source branch/path
-source blob SHA
-new path
-kept functions
-removed/rewritten assumptions
-reason for reuse
-new tests covering it
-```
-
-No unlogged old-branch migration is allowed.
-
----
-
-# 2. Read order and authority
-
-Read in this order before implementation:
-
-1. `README.md`
-2. `CODEX_F0_EXECUTION_PROMPT.md`
-3. `CODEX_F0_MASTER.md`
-4. `research/iclr_fit_validation/round27_route_equipoise_and_admissibility_audit.md`
-5. `research/iclr_fit_validation/round30_seed_validity_method_masking_and_accessibility.md`
-6. `research/iclr_fit_validation/round33_staged_execution_and_hard_gates.md`
-7. `research/iclr_fit_validation/round44_pairwise_matched_evidence_slot_design.md`
-8. `research/iclr_fit_validation/round45_balanced_packet_randomization_design.md`
-9. `research/iclr_fit_validation/round46_source_route_purity_and_mixed_contribution_handling.md`
-10. `research/iclr_fit_validation/round50_codex_branch_pi_audit.md`
-
-If a referenced historical research filename is absent or renamed, record the mismatch in `STATUS.md` and use the latest source-of-truth concept in `README.md`, `CODEX_F0_MASTER.md`, and this execution prompt. Do not invent missing scientific requirements.
-
-Priority for F0 conflicts:
-
-```text
-CODEX_F0_EXECUTION_PROMPT.md
-> CODEX_F0_MASTER.md
-> latest round files
-> historical amendments/tasks
+source_path
+source_blob_sha
+new_path
+kept_logic
+removed_old_assumptions
+reason_for_reuse
+tests_added
 ```
 
 ---
 
-# 3. Hard scientific safety rails
+# 5. Engineering layout
 
-During F0, absolutely do NOT:
-
-- ask any LLM to propose a research idea, hypothesis, experiment, method, or paper;
-- run no-context scientific proposal generation;
-- run evidence-conditioned scientific proposal generation;
-- estimate baseline route propensity from proposal generations;
-- estimate treatment effects;
-- tune routes, matching, seeds, thresholds, or retrieval using imagined future effects;
-- rank/select seeds because they look likely to create a strong paper;
-- write an abstract/results section that implies a phenomenon was observed;
-- silently drop failed seeds, route pairs, papers, or matched slots;
-- use LLM novelty/quality judgments as F0 ground truth.
-
-Allowed LLM use is limited to **source-document transformation/classification**, such as:
-
-- provisional route classification of a paper abstract;
-- provisional Artifact/Knowledge family classification;
-- source-grounded method masking of a focal abstract/problem statement;
-
-and only if:
-
-1. the input source text is preserved;
-2. prompt/model/version is recorded;
-3. raw classifier output is preserved;
-4. the result is marked `PROVISIONAL`;
-5. a human-audit packet is emitted;
-6. the LLM is never asked what research direction should be pursued.
-
----
-
-# 4. Engineering layout
-
-All new F0 code goes under:
-
-```text
-experiments/idea_collapse/f0/
-```
-
-Target layout:
+Active F0 code:
 
 ```text
 experiments/idea_collapse/f0/
@@ -194,155 +217,131 @@ experiments/idea_collapse/f0/
 ├── reporting.py
 └── config/
     └── f0.json
-
-experiments/idea_collapse/tests/f0/
-├── test_provenance.py
-├── test_proceedings.py
-├── test_temporal.py
-├── test_seed_schema.py
-├── test_route_schema.py
-├── test_retrieval.py
-├── test_matching.py
-├── test_packet_simulation.py
-└── test_reporting.py
 ```
 
-All generated source-only F0 artifacts go under:
+Tests:
+
+```text
+experiments/idea_collapse/tests/f0/
+```
+
+Generated source-only artifacts:
 
 ```text
 experiments/idea_collapse/feasibility_1/
 ```
 
-Do not place generated scientific outcomes anywhere because there must be none.
+---
+
+# 6. Phase F0A-1 — audited utility migration
+
+Implement only pure reusable engineering assets.
+
+Acceptance checks:
+
+```text
+no old pilot condition names in active F0 code
+no old fixed domains in active F0 code
+no scientific-generation imports in F0 modules
+all migrated functionality covered by tests
+```
+
+Checkpoint commit:
+
+```text
+f0: migrate audited provenance and proceedings utilities
+```
+
+If clean migration is impossible, set:
+
+```text
+F0_DATA_STATUS = F0_BLOCKED
+BLOCKER = BLOCKED_MIGRATION
+```
+
+and stop.
 
 ---
 
-# 5. Phase E0 — migrate only reusable engineering assets
+# 7. Phase F0A-2 — official ICLR source acquisition
 
-Goal: reuse old engineering work without importing obsolete scientific design.
-
-Tasks:
-
-1. inspect the migration allowlist files from `origin/codex/p0-task0-task1`;
-2. copy/reimplement only useful pure utilities;
-3. move provenance utilities into `f0/provenance.py` rather than treating `generation/` as authoritative;
-4. port the official proceedings parser into `f0/acquire_proceedings.py`;
-5. port/update the parser tests;
-6. write `MIGRATION_LOG.md`.
-
-Acceptance criteria:
+Canonical acceptance universes:
 
 ```text
-- no old pilot condition names in active F0 code
-- no old fixed domains hard-coded in active F0 code
-- no scientific generation import in F0 modules
-- all migrated functionality covered by tests
+ICLR 2025 accepted papers = evidence universe
+ICLR 2026 accepted papers = focal/seed universe
 ```
-
-Commit checkpoint:
-
-```text
-f0: migrate audited provenance and proceedings ingestion
-```
-
-If this phase cannot be completed cleanly, stop and record `BLOCKED_MIGRATION`.
-
----
-
-# 6. Phase E1 — official proceedings + abstracts
-
-## Evidence universe
-
-ICLR 2025 accepted papers from official ICLR proceedings/OpenReview-linked metadata.
-
-## Seed universe
-
-ICLR 2026 accepted papers from official ICLR proceedings/OpenReview-linked metadata.
 
 Acquire at minimum:
 
 ```text
 paper_id
-iclr_year
+year
 title
 abstract
 proceedings_abstract_url
-paper_pdf_url if available
-openreview_url if available
-authors if available
-keywords/area if available
+paper_pdf_url_if_available
+openreview_url_if_available
+authors_if_available
+keywords_area_if_available
 ```
 
-### Acquisition rules
+Rules:
 
-- official proceedings is the canonical acceptance universe;
-- third-party lists may only be used as a cross-check, never silent replacement;
-- every raw downloaded page/file gets SHA256;
-- every normalized table gets SHA256;
-- parse failures remain in a failure ledger;
-- do not infer an abstract from title alone.
+- official proceedings defines denominator;
+- third-party sources are cross-checks only;
+- hash every raw source;
+- hash every normalized table;
+- preserve parse/download failures;
+- never infer missing abstracts from titles.
 
 Required outputs:
 
 ```text
-feasibility_1/raw_sources_manifest.jsonl
-feasibility_1/iclr2025_papers.jsonl
-feasibility_1/iclr2026_papers.jsonl
-feasibility_1/acquisition_failures.jsonl
-feasibility_1/corpus_hash.txt
+raw_sources_manifest.jsonl
+iclr2025_papers.jsonl
+iclr2026_papers.jsonl
+acquisition_failures.jsonl
+corpus_hash.txt
 ```
 
-Acceptance criteria:
+Engineering completeness target:
 
 ```text
-ICLR 2025:
-  title+abstract coverage >= 95% of official proceedings entries
-
-ICLR 2026:
-  title+abstract coverage >= 95% of official proceedings entries
-
-otherwise:
-  mark ACQUISITION_INCOMPLETE and continue only if missingness is characterized;
-  do not silently reduce the denominator.
+title+abstract coverage >=95%
 ```
 
-Commit checkpoint:
+This is a target, not an automatic scientific kill threshold.
+
+If coverage <95%:
+
+1. quantify missingness;
+2. report missingness by subfield/metadata availability if possible;
+3. set `ACQUISITION_WARNING=true`;
+4. continue only if denominator and missingness remain auditable.
+
+If the official denominator itself cannot be established or missingness cannot be characterized, set `F0_BLOCKED`.
+
+Checkpoint:
 
 ```text
-f0: acquire official ICLR 2025-2026 source corpus
+f0: acquire and hash official ICLR source universe
 ```
 
 ---
 
-# 7. Phase E2 — temporal cleanliness
+# 8. Phase F0A-3 — temporal map, not a single automatic cutoff gate
 
-Primary clean evidence rule:
+For every ICLR 2025 paper resolve earliest confidently discovered public date.
 
-```text
-first_public_date > 2024-08-31
-```
+Priority:
 
-For each ICLR 2025 evidence paper resolve the earliest confidently discovered public date.
-
-Priority sources:
-
-1. arXiv first-submission date if confidently matched;
-2. OpenReview original public submission date;
+1. arXiv first submission;
+2. OpenReview original public submission;
 3. other official/public preprint metadata;
-4. otherwise `UNKNOWN`.
+4. otherwise UNKNOWN.
 
-Store:
-
-```text
-first_public_date
-first_public_source
-earliest_candidate_dates[]
-earlier_public_version_found
-earlier_version_search_status
-temporal_status
-```
-
-Allowed temporal statuses:
+Statuses:
 
 ```text
 CLEAN
@@ -351,36 +350,47 @@ UNKNOWN
 AMBIGUOUS_MATCH
 ```
 
-Never call a paper CLEAN merely because the ICLR proceedings date is after the cutoff.
+Never call a paper clean only because proceedings publication is recent.
 
-### arXiv matching rule
-
-A discovered arXiv record is considered a confident match only if title normalization is near-exact and available author metadata is compatible. Record match score/method. Ambiguous matches remain `AMBIGUOUS_MATCH`.
-
-Required output:
+Report coverage under three temporal tiers:
 
 ```text
-feasibility_1/temporal_cleanliness.jsonl
-feasibility_1/temporal_cleanliness_report.md
+T0_COMMON_STRICT:
+  first_public_date > 2024-08-31
+
+T1_LLAMA_CLEANER:
+  first_public_date > 2023-12-31
+
+T2_ALL_ACCEPTED:
+  all accepted ICLR 2025 papers, contamination-uncertain
 ```
 
-Report exact counts/percentages for all statuses.
+Do not choose the final scientific temporal tier.
 
-Commit checkpoint:
+Required:
 
 ```text
-f0: resolve temporal-clean evidence subset
+temporal_cleanliness.jsonl
+temporal_cleanliness_report.md
+```
+
+Report counts, percentages, subfield attrition, UNKNOWN/AMBIGUOUS rates for all tiers.
+
+Checkpoint:
+
+```text
+f0: map temporal-clean evidence tiers
 ```
 
 ---
 
-# 8. Phase E3 — candidate seed construction
+# 9. Phase F0B-1 — method-masked seed candidates
 
-Construct candidate seeds from ICLR 2026 papers.
+From ICLR 2026 focal papers construct source-grounded, method-masked research questions.
 
-Each seed is a **method-masked research problem/question**, not the focal paper's method and not a generated new research direction.
+Do not solve them.
 
-Required schema:
+Required fields:
 
 ```text
 seed_id
@@ -408,7 +418,7 @@ distinctive_ngram_overlap[]
 status
 ```
 
-Use statuses rather than deletion:
+Preserve all candidates using statuses such as:
 
 ```text
 CANDIDATE
@@ -420,106 +430,79 @@ INSUFFICIENT_CONTEXT
 PENDING_HUMAN_AUDIT
 ```
 
-### Method masking rule
+If machine-assisted masking is used:
 
-The masked seed must remove:
+- preserve input;
+- preserve prompt;
+- preserve model/version;
+- preserve raw output;
+- mark provisional.
 
-- proposed method name;
-- focal paper title wording that identifies the method;
-- author names;
-- solution-specific acronym/entity introduced by the paper;
-- sentences that directly disclose the focal solution.
-
-It must preserve:
-
-- problem object;
-- known limitation/problem;
-- evaluation goal or scientific uncertainty;
-- enough technical context for multiple plausible routes.
-
-If machine-assisted masking is used, preserve input/prompt/output and mark provisional.
-
-Required outputs:
+Required:
 
 ```text
-feasibility_1/seed_candidates.jsonl
-feasibility_1/seed_validity_audit_packet.csv
+seed_candidates.jsonl
+seed_validity_audit_packet.csv
 ```
 
-Do not solve the seeds.
-
-Commit checkpoint:
+Checkpoint:
 
 ```text
-f0: build method-masked ICLR 2026 seed candidates
+f0: build auditable method-masked seed candidates
 ```
 
 ---
 
-# 9. Phase E4 — retrieval candidate pools
+# 10. Phase F0B-2 — retrieval candidate pools
 
-## Dense retriever
-
-Preferred default:
+Preferred dense encoder:
 
 ```text
 BAAI/bge-base-en-v1.5
 ```
 
-## Independent reranker
-
-Preferred default:
+Preferred independent reranker:
 
 ```text
 BAAI/bge-reranker-base
 ```
 
-Pin exact resolved model/revision/commit in `retrieval_config.json`.
+Pin exact resolved revision.
 
-If these exact models are unavailable, use a documented open substitute and mark:
+If unavailable, use a documented open substitute and mark `DEGRADED`; never silently substitute.
+
+For every seed and each temporal tier needed for reporting:
+
+1. query only with frozen method-masked seed text;
+2. retrieve a generous candidate pool;
+3. store dense scores/ranks;
+4. rerank if available;
+5. do not alter query using route labels.
+
+Default pool:
 
 ```text
-retrieval_stack_status = DEGRADED
+top 200 dense candidates or full available corpus if smaller
 ```
 
-Do not silently substitute.
-
-For every seed:
-
-1. query with the frozen method-masked seed text only;
-2. retrieve a generous pool from temporal-clean ICLR 2025 evidence;
-3. save dense score/rank for all retained candidates;
-4. rerank the retained pool if reranker available;
-5. do not modify the query using route labels.
-
-Default candidate-pool target:
+Required:
 
 ```text
-top 200 dense candidates per seed
+retrieval_candidates.parquet OR retrieval_candidates.jsonl
+retrieval_config.json
 ```
 
-If the clean corpus has fewer, use the full clean corpus.
-
-Required output:
+Checkpoint:
 
 ```text
-feasibility_1/retrieval_candidates.parquet OR .jsonl
-feasibility_1/retrieval_config.json
-```
-
-Commit checkpoint:
-
-```text
-f0: build frozen source-only retrieval candidate pools
+f0: build frozen source-only retrieval pools
 ```
 
 ---
 
-# 10. Phase E5 — provisional source-route annotation
+# 11. Phase F0B-3 — provisional source-route map
 
-Annotate only papers that appear in the union of retained retrieval candidate pools unless a full-corpus annotation is operationally cheaper.
-
-Fine primary route enum:
+Fine route enum:
 
 ```text
 BUILD_IMPROVE
@@ -531,23 +514,7 @@ VERIFY_FALSIFY_REPLICATE
 MIXED_UNCLEAR
 ```
 
-Required annotation fields:
-
-```text
-primary_route
-secondary_routes[]
-route_purity 0..1
-opposite_route_contamination
-fine_route_confidence
-coarse_contribution_family
-coarse_confidence
-rationale_source_span
-annotation_backend
-annotation_version
-status
-```
-
-Coarse family:
+Coarse external robustness family:
 
 ```text
 ARTIFACT
@@ -556,48 +523,58 @@ BOTH
 UNCLEAR
 ```
 
-### Route-clear core filter
-
-For primary matched-slot feasibility counts, use route-clear source papers:
+Required fields:
 
 ```text
-primary_route != MIXED_UNCLEAR
-route_purity >= 0.70
-fine_route_confidence >= 0.70
+primary_route
+secondary_routes[]
+route_purity
+opposite_route_contamination
+fine_route_confidence
+coarse_family
+coarse_confidence
+rationale_source_span
+annotation_backend
+annotation_version
+status
 ```
 
-Also report sensitivity at purity thresholds:
+Important:
+
+`route_purity` and classifier confidence are provisional source descriptors, not calibrated scientific truth.
+
+Report all source-feasibility results at route-purity sensitivity thresholds:
 
 ```text
-0.60 / 0.70 / 0.80
+0.60
+0.70
+0.80
 ```
 
-These are source-only sensitivity checks, not treatment tuning.
+Do not automatically choose one threshold as the scientific filter.
 
-### Required lexical shortcut audit
+Also run a simple lexical baseline to quantify how easily route labels can be predicted from wording.
 
-Fit/report a deliberately simple lexical baseline predicting fine routes from abstracts. This is a diagnostic, not a route classifier used as ground truth.
-
-Required outputs:
+Required:
 
 ```text
-feasibility_1/source_route_annotations.jsonl
-feasibility_1/route_label_summary.json
-feasibility_1/route_annotation_audit_packet.csv
-feasibility_1/lexical_route_baseline.json
+source_route_annotations.jsonl
+route_label_summary.json
+route_annotation_audit_packet.csv
+lexical_route_baseline.json
 ```
 
-Commit checkpoint:
+Checkpoint:
 
 ```text
-f0: annotate source contribution routes with audit trail
+f0: build provisional source-route map and sensitivity audit
 ```
 
 ---
 
-# 11. Phase E6 — predeclared route-pair coverage
+# 12. Phase F0B-4 — predeclared route contrasts
 
-Audit these route contrasts exactly:
+Always audit:
 
 ```text
 R1 BUILD_IMPROVE        vs DIAGNOSE_STRESS_TEST
@@ -608,7 +585,9 @@ R4 DIAGNOSE_STRESS_TEST vs EXPLAIN_MECHANISM_THEORY
 
 Do not replace R1-R4 because another pair has better coverage.
 
-For every `seed × R1..R4`, report source counts above the frozen candidate/relevance floor.
+For every seed × route pair × temporal tier × purity sensitivity:
+
+report source counts and candidate relevance distributions.
 
 Also report:
 
@@ -619,44 +598,34 @@ best_triplet_if_any
 triplet_min_evidence_count
 ```
 
-Do not prioritize 3-route seeds in the core recommendation.
-
-Required outputs:
+Required:
 
 ```text
-feasibility_1/route_pair_coverage.csv
-feasibility_1/multi_route_coverage.csv
+route_pair_coverage.csv
+multi_route_coverage.csv
 ```
 
 ---
 
-# 12. Phase E7 — pairwise matched evidence slots
+# 13. Phase F0B-5 — pairwise matched evidence slots
 
-This is the primary F0 engineering object.
-
-For every promising `seed × route pair`, form slots:
+Primary engineering object:
 
 ```text
 slot_j = (A_paper_j, B_paper_j)
 ```
 
-A and B differ in scientific route but are similar on source-only covariates.
-
-## Matching covariates
-
-Required:
+Required matching covariates:
 
 ```text
 dense relevance percentile within seed pool
-reranker relevance percentile if available
+reranker percentile if available
 log abstract token length
 first-public date
-topic embedding
+topic embedding distance
 ```
 
-## Matching algorithm
-
-Preferred:
+Preferred algorithm:
 
 ```text
 minimum-cost bipartite matching without replacement
@@ -664,45 +633,43 @@ minimum-cost bipartite matching without replacement
 
 with deterministic tie-breaking.
 
-Matching cost uses equal-weight standardized differences for scalar covariates plus topic embedding distance. Save the exact formula in config.
-
-## Predeclared caliper tiers
-
-Evaluate all three source-only tiers; do not select a tier based on future scientific outcomes.
+Predeclared diagnostic caliper tiers:
 
 ### STRICT
 
 ```text
-dense relevance percentile difference <= 0.05
-reranker percentile difference <= 0.05 if available
-token-length ratio <= 1.25
-absolute public-date difference <= 180 days
-topic cosine distance <= 0.10
+dense percentile diff <= .05
+reranker percentile diff <= .05 if available
+token ratio <= 1.25
+date diff <= 180 days
+topic cosine distance <= .10
 ```
 
-### BASE — primary F0 recommendation tier
+### BASE
 
 ```text
-dense relevance percentile difference <= 0.10
-reranker percentile difference <= 0.10 if available
-token-length ratio <= 1.50
-absolute public-date difference <= 365 days
-topic cosine distance <= 0.20
+dense percentile diff <= .10
+reranker percentile diff <= .10 if available
+token ratio <= 1.50
+date diff <= 365 days
+topic cosine distance <= .20
 ```
 
-### RELAXED — sensitivity only
+### RELAXED
 
 ```text
-dense relevance percentile difference <= 0.20
-reranker percentile difference <= 0.20 if available
-token-length ratio <= 2.00
-absolute public-date difference <= 540 days
-topic cosine distance <= 0.30
+dense percentile diff <= .20
+reranker percentile diff <= .20 if available
+token ratio <= 2.00
+date diff <= 540 days
+topic cosine distance <= .30
 ```
 
-If reranker is unavailable, report all matched-slot counts as `NO_RERANKER` and do not hide the limitation.
+Critical v2 rule:
 
-For each block/tier report:
+> These are sensitivity tiers, not automatic scientific feasibility gates.
+
+For every block/tier report:
 
 ```text
 n_A_candidates
@@ -720,20 +687,59 @@ unmatched_A_count
 unmatched_B_count
 ```
 
-Required output:
+Required:
 
 ```text
-feasibility_1/matched_evidence_slots.csv
-feasibility_1/matching_diagnostics/*.json
+matched_evidence_slots.csv
+matching_diagnostics/*.json
 ```
 
 ---
 
-# 13. Phase E8 — scientific equipoise audit packets
+# 14. Packet-size coverage grid
 
-Codex does not invent human ratings.
+Report matched-slot coverage at:
 
-For every BASE-tier block supporting at least `k=6`, prepare a human audit row with:
+```text
+k = 4 / 6 / 8 / 12
+```
+
+Do not choose final scientific k.
+
+Notes:
+
+- k=4/8/12 can support exact quarter mixtures;
+- k=6 is an intermediate source-coverage diagnostic;
+- final k is chosen by research lead after F0/F1 and before scientific outcomes.
+
+For each k report:
+
+```text
+unique_seed_count
+route_pair_count
+subfield_count
+multiple_packet_realization_count
+```
+
+across:
+
+```text
+T0/T1/T2 temporal tiers
+STRICT/BASE/RELAXED matching tiers
+0.60/0.70/0.80 purity thresholds
+```
+
+Every grid cell must be preserved. Do not highlight only the best cell.
+
+---
+
+# 15. Phase F0B-6 — equipoise packet preparation
+
+For every reasonably source-supported block, prepare a human-review row.
+
+Codex does not fill human ratings.
+
+Required metadata:
 
 ```text
 seed_id
@@ -742,12 +748,11 @@ neutral_route_A_description
 neutral_route_B_description
 representative_A_paper_ids
 representative_B_paper_ids
-A_relevance_summary
-B_relevance_summary
-max_BASE_matched_slots
+relevance_summaries
+matched_slot_counts_by_tier
 ```
 
-and blank columns:
+Blank human fields:
 
 ```text
 A_RELEVANCE_TO_SEED 1-5
@@ -763,7 +768,7 @@ ROUTE_DOMINANCE
 HUMAN_NOTES
 ```
 
-Also emit provisional source-only pair type:
+Also include provisional source-only pair type:
 
 ```text
 TYPE_I_COMPETING_STRATEGIC
@@ -773,285 +778,190 @@ TYPE_IV_HIERARCHICAL_OR_SUBSUMED
 UNCLEAR
 ```
 
-Required output:
+Required:
 
 ```text
-feasibility_1/route_equipoise_audit_packet.csv
+route_equipoise_audit_packet.csv
 ```
 
 ---
 
-# 14. Phase E9 — paper-ID-only packet balance simulation
+# 16. Phase F0B-7 — paper-ID-only packet simulation
 
-For every BASE-tier block with at least `k=8` matched slots, simulate paper-ID-only packet assignments using the same matched-slot bank at:
+For k values supporting exact quarter mixtures (`4/8/12`), simulate:
 
 ```text
-alpha = 0,.25,.5,.75,1
+alpha = 0/.25/.5/.75/1
 ```
 
-For `k=8`, use counts:
+using the same matched-slot bank with deterministic balanced/complementary assignments.
+
+No scientific model calls.
+
+Report:
 
 ```text
-0/8, 2/6, 4/4, 6/2, 8/0
+total_tokens
+mean_median_dense_relevance
+mean_median_reranker_relevance
+public_date_distribution
+topic_coverage
+route_purity
+slot_identity_balance
 ```
 
-Use deterministic balanced/complementary slot assignments. Generate multiple packet realizations if the slot bank permits, but no scientific model calls.
-
-Report across alpha:
+Required:
 
 ```text
-total tokens
-mean/median dense relevance
-mean/median reranker relevance
-public-date distribution
-topic-coverage summary
-route-purity summary
-slot-identity balance
-```
-
-Required output:
-
-```text
-feasibility_1/packet_balance_simulation.csv
+packet_balance_simulation.csv
 ```
 
 ---
 
-# 15. Phase E10 — attrition + final F0 report
+# 17. F0 final report — descriptive, not scientific adjudication
 
-Produce the full denominator-preserving waterfall:
-
-```text
-ICLR 2026 official focal papers
-→ source-parsed focal papers
-→ method-maskable seeds
-→ seed-validity candidates
-→ multi-route-open candidates
-→ >=2 source-supported routes
-→ R1-R4 candidate blocks
-→ BASE relevance-matchable blocks
-→ >=6 matched slots
-→ >=8 matched slots
-→ >=12 matched slots
-→ source-feasible blocks pending human equipoise
-```
-
-Required output:
+Required:
 
 ```text
-feasibility_1/attrition_waterfall.csv
-feasibility_1/FEASIBILITY_RESULT.md
+attrition_waterfall.csv
+coverage_balance_frontier.csv
+FEASIBILITY_RESULT.md
 ```
 
-## Predeclared F0 recommendation thresholds
-
-These thresholds concern **source constructibility only** and are fixed before seeing F0 results.
-
-### SOURCE_FEASIBLE_BROAD
-
-All must hold at BASE calipers:
+`coverage_balance_frontier.csv` must cross-tabulate at minimum:
 
 ```text
->= 30 unique seeds with at least one route pair supporting >= 8 matched slots
->= 3 distinct subfields represented among those seeds
->= 2 of R1-R4 represented by >= 8 unique seeds each
-route-clear filtering does not remove > 70% of otherwise matchable blocks
-at least 20 unique seeds can support >= 2 balanced packet realizations at k=8
-no single subfield contributes > 60% of k=8 seeds
+temporal_tier
+purity_threshold
+matching_tier
+k
+unique_seeds
+route_pairs
+subfields
+seeds_with_multiple_packet_realizations
+median_relevance_diff
+p90_relevance_diff
+median_topic_distance
+p90_topic_distance
 ```
 
-### SOURCE_FEASIBLE_NARROW
-
-Any of:
+`FEASIBILITY_RESULT.md` must contain:
 
 ```text
-15-29 unique seeds with >=8 BASE matched slots
-OR >=30 such seeds but concentrated in <3 subfields
-OR only one route pair dominates strongly
+1. F0_DATA_STATUS: F0_COMPLETE/F0_INCOMPLETE/F0_BLOCKED
+2. branch/commit/source hashes
+3. official acquisition coverage and missingness
+4. temporal-tier coverage
+5. seed masking/leakage summary
+6. provisional route-map ambiguity/purity summary
+7. R1-R4 source coverage
+8. complete k=4/6/8/12 coverage grid
+9. complete STRICT/BASE/RELAXED balance frontier
+10. T0/T1/T2 sensitivity
+11. 0.60/0.70/0.80 purity sensitivity
+12. subfield/route-pair concentration
+13. matched-slot attrition
+14. packet-realization capacity
+15. dominant engineering/source blockers
+16. files requiring human F1 review
+17. explicit statement: SCIENTIFIC_DECISION = RESEARCH_LEAD_REQUIRED
+18. explicit statement: SCIENTIFIC_GENERATIONS_PERFORMED = 0
 ```
 
-provided there are still >=20 unique seeds with >=6 BASE matched slots.
-
-### MARGINAL
-
-```text
-8-14 unique seeds with >=8 BASE matched slots
-OR 12-19 unique seeds with >=6 BASE matched slots
-```
-
-or broad counts exist only under RELAXED calipers/purity threshold 0.60.
-
-### NOT_FEASIBLE
-
-```text
-<8 unique seeds with >=8 BASE matched slots
-AND <12 unique seeds with >=6 BASE matched slots
-```
-
-or temporal/purity/relevance failures make the paired causal design scientifically indefensible.
-
-Do not alter these thresholds after seeing counts.
-
-## FEASIBILITY_RESULT.md required sections
-
-```text
-1. Executive recommendation
-2. Exact branch/commit and source hashes
-3. Acquisition coverage
-4. Temporal-clean evidence coverage
-5. Seed construction/validity counts
-6. Fine/coarse route annotation counts and ambiguity
-7. Route-pair coverage R1-R4
-8. Matched-slot counts under STRICT/BASE/RELAXED
-9. k=6/k=8/k=12 unique-seed counts
-10. Subfield distribution
-11. 3-route coverage
-12. Route-purity sensitivity
-13. Packet-balance simulation summary
-14. Attrition waterfall
-15. Dominant blockers
-16. Human audit files requiring PI review
-17. Migration/reuse log
-18. Tests executed
-19. Deviations
-20. Hard-stop statement: no scientific proposal generation performed
-```
+Codex must not call the project scientifically feasible/infeasible.
 
 ---
 
-# 16. Required tests
+# 18. Engineering hard-stop conditions
 
-At minimum implement and pass tests for:
+Set `F0_BLOCKED` and stop only if one of these prevents an auditable source map:
+
+- cannot establish official ICLR denominator;
+- acquisition missingness cannot be characterized;
+- source provenance/hashing is unreliable;
+- retrieval/matching implementation cannot be made deterministic/reproducible;
+- required artifacts cannot be produced without violating F0 scientific prohibitions.
+
+Do not block merely because source counts are low. Low counts are a scientific design fact for research-lead review.
+
+---
+
+# 19. Tests
+
+At minimum test:
 
 ```text
-proceedings parser schema
-abstract parser schema
-canonical hashing reproducibility
-exclusive/immutable writes
-temporal cutoff boundary at 2024-08-31
-temporal UNKNOWN/AMBIGUOUS states
+canonical serialization/hash stability
+exclusive-write behavior
+proceedings parser correctness
+duplicate paper IDs
+temporal cutoff boundary logic
+ambiguous-date status handling
 seed schema validation
-focal-paper exclusion from evidence pool
+focal-paper exclusion
 route enum/schema validation
-route purity threshold behavior
-retrieval deterministic ranking/ties
-matching deterministic output
+retrieval deterministic ties
 matching without replacement
-STRICT/BASE/RELAXED calipers
-k=6/8/12 slot counts
-balanced alpha assignment
-packet identity complementarity
-no duplicate paper within a packet
-attrition denominator preservation
-report threshold classification
-scientific-generation import/call guard
+caliper enforcement
+unmatched-paper retention
+packet alpha composition
+balanced/complementary assignment determinism
+coverage-frontier denominator preservation
+reporting completeness
+hard prohibition: F0 modules import no scientific generation runner
 ```
 
-Run at each checkpoint:
-
-```bash
-python -m unittest discover -s experiments/idea_collapse/tests -v
-# or pytest if the branch explicitly standardizes on pytest
-
-git diff --check
-```
-
-Do not switch test framework mid-task without recording why.
+Run full tests before each major checkpoint and at final handoff.
 
 ---
 
-# 17. Commit discipline
+# 20. Checkpoint policy
 
-Use small commits by phase. Recommended commit messages:
-
-```text
-f0: migrate audited provenance and proceedings ingestion
-f0: acquire official ICLR 2025-2026 source corpus
-f0: resolve temporal-clean evidence subset
-f0: build method-masked ICLR 2026 seed candidates
-f0: build frozen source-only retrieval candidate pools
-f0: annotate source contribution routes with audit trail
-f0: implement pairwise matched-slot feasibility
-f0: emit equipoise and packet-balance audit artifacts
-f0: publish source-only feasibility result
-```
-
-Update `feasibility_1/STATUS.md` at each checkpoint with:
+Commit after major phases using descriptive commits, e.g.:
 
 ```text
-phase
-commit
-commands
-counts
-artifacts
-tests
-blockers
-deviations
-next phase
+f0: migrate audited provenance utilities
+f0: acquire official ICLR source universe
+f0: map temporal source tiers
+f0: build method-masked seed candidates
+f0: build frozen retrieval pools
+f0: build provisional route map
+f0: compute matching coverage frontier
+f0: prepare human audit and packet-balance artifacts
+f0: publish complete source-feasibility report
 ```
 
-Do not squash away failed attempts or exclusions that matter for provenance.
+Do not squash away intermediate failed/partial evidence before research-lead review.
 
 ---
 
-# 18. Stop-on-failure behavior
+# 21. Final response contract
 
-If a transient download/model-download error occurs, retry once with a bounded alternative mirror/source and record it.
-
-Do not repeatedly retry unchanged failures.
-
-Stop early and write an explicit partial `FEASIBILITY_RESULT.md` if any of these occurs:
-
-```text
-official ICLR source acquisition is fundamentally inaccessible
-abstract coverage cannot reach 80%
-temporal-date resolution is too incomplete to define a clean subset
-route annotation cannot produce auditable labels even provisionally
-retrieval/matching implementation cannot be made deterministic
-```
-
-Use recommendation `NOT_FEASIBLE` or `MARGINAL` only according to the fixed criteria, and distinguish engineering blockage from scientific source sparsity.
-
----
-
-# 19. Push/handoff contract
-
-When F0 is complete:
-
-1. ensure working tree is clean;
-2. run all tests;
-3. record final commit SHA in `FEASIBILITY_RESULT.md` and `STATUS.md`;
-4. push:
-
-```bash
-git push -u origin codex/f0-source-feasibility
-```
-
-If push fails, do not modify `main`. Record transport failure and preserve the complete local commit history/bundle if useful.
-
-Final Codex response must contain exactly these factual fields:
+After pushing the branch, report exactly:
 
 ```text
 BRANCH:
 FINAL_COMMIT:
-F0_RECOMMENDATION:
-ICLR2025_TOTAL:
+F0_DATA_STATUS:
+ICLR2025_OFFICIAL_COUNT:
 ICLR2025_ABSTRACT_COVERAGE:
-TEMPORAL_CLEAN_EVIDENCE_COUNT:
-ICLR2026_TOTAL:
+ICLR2026_OFFICIAL_COUNT:
+ICLR2026_ABSTRACT_COVERAGE:
+T0_COMMON_STRICT_COUNT:
+T1_LLAMA_CLEANER_COUNT:
 METHOD_MASKABLE_SEEDS:
-MULTI_ROUTE_SEEDS:
-K6_BASE_UNIQUE_SEEDS:
-K8_BASE_UNIQUE_SEEDS:
-K12_BASE_UNIQUE_SEEDS:
-THREE_ROUTE_SEEDS:
-SUBFIELDS_WITH_K8_BLOCKS:
-DOMINANT_BLOCKER:
+MULTI_ROUTE_SEEDS_PROVISIONAL:
+K4_COVERAGE_SUMMARY:
+K6_COVERAGE_SUMMARY:
+K8_COVERAGE_SUMMARY:
+K12_COVERAGE_SUMMARY:
+DOMINANT_SOURCE_BLOCKER:
 HUMAN_REVIEW_FILES:
 TEST_RESULT:
+SCIENTIFIC_DECISION: RESEARCH_LEAD_REQUIRED
 SCIENTIFIC_GENERATIONS_PERFORMED: 0
 ```
 
-Then STOP.
+Then stop.
 
-Do not start P0 baseline generation, treatment generation, analysis, or paper writing. The research lead will review the pushed branch and issue a new task only if justified.
+Do not start F1 or P0.
