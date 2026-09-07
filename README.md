@@ -1,165 +1,328 @@
 # ICLR Research Project
 
-Goal: produce a defensible ICLR contribution through **ICLR-specific research → preregistration → controlled pilot → kill/continue → mechanism/robustness → paper → reviewer red-team**.
+Goal: produce a defensible ICLR contribution through **ICLR-specific research → source/construct validation → preregistered controlled experiment → mechanism/robustness → held-out natural-RAG validation → paper → reviewer red-team**.
 
-Current date: 2026-09-06.
+Current date: 2026-09-07.
 
-## Current P0
-
-Previous broad ideas (`model editing locality`, `multi-turn decomposition`, `causal memory`, and later `Shared-Retrieval Research Monoculture`) are historical motivation only.
-
-The current research question is:
-
-> **Can retrieved scientific literature override an LLM's default scientific-method / research-mode prior, and does evidence uptake weaken at higher levels of scientific abstraction?**
-
-Candidate phenomenon:
-
-> **Grounding without steering** — the model may clearly use retrieved sources and concepts while remaining anchored to its no-retrieval prior in high-level method choice or problem framing.
-
-The opposite outcome — strong and predictable high-level scientific steerability — is also a valid scientific branch.
-
-## Single operational experiment contract
-
-Read first:
-
-1. [`experiments/idea_collapse/PREREGISTRATION_V1.md`](experiments/idea_collapse/PREREGISTRATION_V1.md)  
-   **Current operational preregistration.** Where historical specs conflict, V1 wins.
-
-2. [`research/iclr_fit_validation/round8_selection_independent_design.md`](research/iclr_fit_validation/round8_selection_independent_design.md)  
-   Why treatment modes are selected from literature before observing model priors.
-
-3. [`research/iclr_fit_validation/round7_internal_validity_and_dataset_design.md`](research/iclr_fit_validation/round7_internal_validity_and_dataset_design.md)  
-   Temporal cleanliness, anti-priming controls, natural-RAG validation, model/corpus design.
-
-4. [`research/iclr_fit_validation/round6_steerability_reframe.md`](research/iclr_fit_validation/round6_steerability_reframe.md)  
-   ICLR scientific framing and outcome branches.
-
-5. [`research/iclr_fit_validation/taxonomy_design_draft.md`](research/iclr_fit_validation/taxonomy_design_draft.md)  
-   Research draft for the two-layer taxonomy; **not yet the frozen experiment taxonomy**.
-
-6. [`research/iclr_fit_validation/outcome_conditioned_paper_blueprints.md`](research/iclr_fit_validation/outcome_conditioned_paper_blueprints.md)  
-   What the paper should look like under strong-steerability, prior-bound, or kill outcomes.
-
-7. [`research/iclr_fit_validation/related_work_matrix.md`](research/iclr_fit_validation/related_work_matrix.md)  
-   Collision map and claims we must not make.
-
-8. [`CODEX_WORKFLOW.md`](CODEX_WORKFLOW.md)  
-   Historical execution discipline. Its scientific task details are superseded by `PREREGISTRATION_V1.md` where they conflict.
-
-Historical research and Amendments A–D remain in the repository for provenance. Do not delete them.
-
-## Current experiment ordering
+## Current decision
 
 ```text
-TEMPORAL-CLEAN ICLR CORPUS
-ICLR 2025 evidence + ICLR 2026 method-masked seeds
-        ↓
-PRE-TREATMENT TAXONOMY AUDIT
-freeze high-level scientific move + lower-level method taxonomy
-        ↓
-SELECTION-INDEPENDENT TREATMENTS
-choose matchable literature framing pairs WITHOUT model outputs
-freeze treatment-selection hash
-        ↓
-NO-CONTEXT PRIORS
-independent P0-A / P0-B model generations
-        ↓
-MATCHED EVIDENCE MIXTURE
-0 / 25 / 50 / 75 / 100% framing composition
-        ↓
-HIERARCHICAL CONTEXT UPTAKE
-L0 source → L1 concept → L2 method → L3 scientific move → L4 problem framing
-        ↓
-NEGATIVE / NUISANCE CONTROLS
-within-mode packet swap, prompt/order, lexical priming, sampling breadth
-        ↓
-HELD-OUT NATURAL-RAG VALIDATION
-prior-only vs prior+evidence-composition prediction
-        ↓
-HARD SCIENTIFIC GATE
-   ├─ CONTINUE A: strong high-level steerability
-   ├─ CONTINUE B: grounded but prior-bound
-   └─ KILL: trivial priming / noisy construct / confounded evidence / collision
+KEEP / CONDITIONAL GO
+Current stage: F0 SOURCE-ONLY FEASIBILITY
+Scientific research-proposal generation: NOT AUTHORIZED
 ```
 
-## Why the question changed
+Previous broad ideas (`model editing locality`, `multi-turn decomposition`, `causal memory`, `Shared-Retrieval Research Monoculture`, generic `retrieval as a hidden prior`) are historical motivation only.
 
-ICLR 2025 already found that changing RAG paper count had little effect on a coarse near-duplicate scientific-idea metric, while model backbone had a large effect. 2026 work further finds strong shared narrowing in LLM-recommended scientific methodologies. Meanwhile ICLR 2025–2026 work establishes context-vs-prior reliance and **in-context steerability** as general ML problems.
+## Current core question
 
-Therefore the paper cannot be “RAG makes research ideas more/less diverse.” The ICLR-shaped question is **whether scientific evidence actually changes the model's high-level search distribution, and at what abstraction level context stops winning against the model prior.**
+> **For an open-ended ICLR research problem with multiple scientifically valid strategies, how does changing the composition of equally relevant real scientific literature change an LLM's high-level research choice, and can this controlled response explain behavior under ordinary retrieval?**
 
-## Files required before confirmatory treatment generation
+Secondary mechanism question:
+
+> Does evidence response depend systematically on the model × seed's independently measured **no-context baseline route propensity**?
+
+Preferred terminology:
 
 ```text
-experiments/idea_collapse/TAXONOMY.md
-experiments/idea_collapse/annotation_audit_pre_treatment.md
-experiments/idea_collapse/taxonomy_version.json
-experiments/idea_collapse/corpus_manifest.json
-experiments/idea_collapse/model_cutoff_manifest.json
-experiments/idea_collapse/seed_manifest.json
-experiments/idea_collapse/TREATMENT_MODE_SELECTION.md
-experiments/idea_collapse/treatment_selection_hash.json
-experiments/idea_collapse/evidence_matching_report.md
-experiments/idea_collapse/P0_A_summary.json
-experiments/idea_collapse/P0_B_summary.json
-experiments/idea_collapse/preregistered_analysis.json
-experiments/idea_collapse/STATUS.md
+baseline route propensity
+
+evidence-conditioned scientific choice response
+
+matched scientifically plausible alternative routes
 ```
 
-Treatment modes must be frozen before P0-A/P0-B outcomes under the strict selection-independent design.
+Avoid generic claims that we introduce `scientific priors`, `in-context steerability`, or evidence-grounded scientific ideation; recent work already occupies those broader spaces.
 
-## Hard rules
+## Read order — research lead / Codex
 
-- Do not build another end-to-end scientific-agent framework.
-- Do not use treatment outcomes to redefine the taxonomy or choose the treatment modes.
-- Do not weaken relevance to manufacture a counter-direction effect.
-- Do not call lexical/method copying “scientific steerability.”
-- Do not rely on embedding diversity or an LLM novelty score as primary ground truth.
-- Do not pool model families before reporting within-model effects.
-- Preserve all candidate seeds, matching failures, nulls, parse failures, raw generations, hashes, configs, and deviations.
-- Do not force a paper if the result is scientifically trivial.
+1. [`research/iclr_fit_validation/round41_current_decision_ledger_and_scope_freeze.md`](research/iclr_fit_validation/round41_current_decision_ledger_and_scope_freeze.md)  
+   **Current scientific state and scope freeze.**
 
-## Paper outcome branches
+2. [`research/iclr_fit_validation/round33_staged_execution_and_hard_gates.md`](research/iclr_fit_validation/round33_staged_execution_and_hard_gates.md)  
+   F0 → F1 → P0 → P1 → P2 → P3 execution/gate ordering.
 
-### A — strong steerability
+3. [`research/iclr_fit_validation/round36_iclr_reviewer_matrix_and_must_have_evidence.md`](research/iclr_fit_validation/round36_iclr_reviewer_matrix_and_must_have_evidence.md)  
+   ICLR reviewer attacks mapped to required evidence.
 
-> Matched literature composition causally and predictably shifts high-level scientific choices, even when coarse duplicate metrics miss the shift.
+4. [`research/iclr_fit_validation/round40_data_schema_and_preregistered_analysis_contract.md`](research/iclr_fit_validation/round40_data_schema_and_preregistered_analysis_contract.md)  
+   Provenance/data/analysis freeze contract.
 
-Candidate title: **Same Relevance, Different Science**.
+5. [`research/iclr_fit_validation/round32_pre_result_paper_storyboard.md`](research/iclr_fit_validation/round32_pre_result_paper_storyboard.md)  
+   Paper/figure branches defined before outcomes.
 
-### B — grounded but prior-bound
+6. [`research/iclr_fit_validation/related_work_matrix.md`](research/iclr_fit_validation/related_work_matrix.md) and [`research/iclr_fit_validation/round34_last_30d_collision_update.md`](research/iclr_fit_validation/round34_last_30d_collision_update.md)  
+   Collision boundary and prohibited novelty claims.
 
-> Models visibly use retrieved sources/concepts but resist counter-prior context at method/problem-framing levels, revealing hierarchical context reliance.
+7. [`experiments/idea_collapse/PREREGISTRATION_V1.md`](experiments/idea_collapse/PREREGISTRATION_V1.md)  
+   Historical/current operational preregistration foundation. Newer pre-outcome research rounds further tighten it; do not start scientific generation from this file alone.
 
-Candidate title: **Grounded but Prior-Bound**.
+Historical rounds/amendments remain for provenance. Do not delete or rewrite research history.
 
-### Kill
+## Current Codex authorization
 
-If the honest summary is only “the model talks about the kind of method in its prompt,” or if matching/taxonomy/temporal cleanliness fails, stop the topic.
+Codex is authorized **only** for source-only F0 feasibility.
 
-## Reproducibility contract
+Read:
 
-Every scientific result maps to:
+- [`CODEX_FEASIBILITY_TASK_1.md`](CODEX_FEASIBILITY_TASK_1.md)
+- [`CODEX_FEASIBILITY_TASK_1_AMENDMENT_A.md`](CODEX_FEASIBILITY_TASK_1_AMENDMENT_A.md)
+- [`CODEX_FEASIBILITY_TASK_1_AMENDMENT_B.md`](CODEX_FEASIBILITY_TASK_1_AMENDMENT_B.md)
+
+Required hand-back:
 
 ```text
-git commit
-corpus hash
-model cutoff metadata
-seed manifest
-treatment-selection hash
-prompt hash
-model/version
-retriever/reranker versions
-evidence packet IDs + matching diagnostics
-random seed/run ID
-taxonomy/version
-analysis config
+experiments/idea_collapse/feasibility_1/FEASIBILITY_RESULT.md
 ```
 
-Negative evidence remains in the repository.
+Until that file is reviewed by the research lead, Codex must NOT:
 
-## ICLR official references
+- generate scientific research proposals;
+- estimate no-context route propensity;
+- run evidence-conditioned treatment generations;
+- inspect treatment outcomes;
+- select route pairs from model behavior;
+- write results as if a phenomenon has been observed.
+
+## Core experimental object
+
+For model `M`, method-masked research seed `x`, matched evidence packet `C_alpha`, and free-form proposal `Y`:
+
+```text
+Y ~ P_M(Y | x, C_alpha)
+```
+
+For a source-selected, frozen A/B scientific route pair:
+
+```text
+alpha = fraction of Route-A evidence
+        in a fixed-size, relevance-matched packet
+
+alpha ∈ {0, .25, .5, .75, 1}
+```
+
+Routes are frozen from ICLR literature **before model outputs**.
+
+A/B scientific alternatives must pass:
+
+- seed validity/method neutrality;
+- multi-route openness;
+- source support;
+- relevance matching;
+- scientific plausibility/equipoise;
+- distinguishability/non-subsumption;
+- human annotatability.
+
+## Primary outcome
+
+Human-anchored, blinded ordinal route score:
+
+```text
++2  STRONGLY_A
++1  LEANS_A
+ 0  MIXED
+-1  LEANS_B
+-2  STRONGLY_B
+NA  NEITHER / INVALID
+```
+
+Annotators do not see model identity, evidence packet, alpha, or expected direction.
+
+An LLM classifier may scale annotation only after human calibration; it does not define ground truth.
+
+## Confirmatory hypotheses
+
+### H1 — Evidence-conditioned scientific choice
+
+Matched evidence composition changes high-level route choice.
+
+### H2 — Baseline-conditioned response
+
+The response depends on independently measured no-context baseline route propensity.
+
+### H3 — Controlled-to-natural prediction
+
+A response model fitted only on controlled evidence mixtures improves held-out prediction of the same model's route choices under ordinary top-k retrieval relative to baseline-only prediction.
+
+## Required validity chain
+
+A strong paper needs:
+
+```text
+source/seed validity
+        ↓
+route equipoise + relevance matching
+        ↓
+controlled evidence-mixture response
+        ↓
+blinded human measurement
+        ↓
+replication across model families
+        ↓
+anti-priming / copy controls
+        ↓
+baseline interaction or another nontrivial regularity
+        ↓
+held-out natural-RAG prediction
+```
+
+Raw `different papers → different proposal words` is explicitly insufficient.
+
+## Anti-priming mechanism tests
+
+Prioritized after the core response exists:
+
+- content-normalized evidence cards (`PF`, `PFM`, `PFL`);
+- direct/near method-copy exclusion;
+- within-route vs cross-route matched document replacement;
+- prompt/order nuisance controls;
+- source → concept → method → route → problem-framing uptake profile.
+
+If RAW abstracts show an effect but normalized/copy-controlled evidence does not, the main scientific claim should be killed or heavily downgraded.
+
+## Held-out natural-RAG validation
+
+Controlled intervention data fit a frozen response law.
+
+Then on held-out seeds:
+
+```text
+ordinary top-k retrieval
+→ frozen route-composition features
+→ predict model's route distribution
+```
+
+Compare:
+
+```text
+M0 global/null
+M1 baseline only
+M2 evidence only
+M3 baseline + evidence
+M4 baseline + evidence + interaction
+```
+
+Natural-RAG outcomes evaluate the frozen prediction model; they do not refit it.
+
+## Model plan
+
+Causal core: open/auditable model families first.
+
+```text
+Llama 3.1 family  — documented cutoff Dec 2023
+Gemma 3 family    — documented cutoff Aug 2024
+```
+
+Strict shared evidence subset:
+
+```text
+ICLR 2025 paper first public > 2024-08-31
+and no discovered earlier public version before cutoff
+```
+
+Likely engineering pilot checkpoints:
+
+```text
+Llama-3.1-8B-Instruct
+Gemma-3-12B-IT
+```
+
+Larger family checkpoints may be frozen for confirmatory replication if infrastructure supports them. Closed frontier APIs are external-validity extensions, not the temporal-clean causal core.
+
+## Execution gates
+
+```text
+F0 SOURCE-ONLY FEASIBILITY          ← CURRENT
+ ↓
+F1 CONSTRUCT / HUMAN ANNOTATION AUDIT
+ ↓
+P0 ENGINEERING / VARIANCE PILOT
+   alpha = 0,.5,1
+ ↓
+G0 FULL-STUDY AUTHORIZATION
+ ↓
+P1 CONFIRMATORY FIVE-LEVEL MIXTURE
+ ↓
+G1 NONTRIVIAL PHENOMENON?
+ ↓
+P2 MECHANISM / ANTI-PRIMING
+ ↓
+G2 MORE THAN PRIMING?
+ ↓
+P3 HELD-OUT NATURAL RAG
+ ↓
+G3 PAPER-LEVEL EXTERNAL VALIDITY
+ ↓
+P4 OPTIONAL EXTENSIONS
+   base-vs-instruct / 3-route simplex / frontier / MUSES
+```
+
+No later stage is automatically authorized by an older prompt.
+
+## Statistical discipline
+
+- generation samples are Monte Carlo draws, not independent scientific replications;
+- seed is the primary clustering/generalization unit when multiple route pairs share a seed;
+- report within-model effects before pooled results;
+- prioritize 30–40 independent seeds for a strong full study if F0 supports that breadth;
+- final sample size / SESOI are frozen after construct/variance pilot and before confirmatory outcomes;
+- do not stop when a p-value becomes significant.
+
+## Current neutral paper identity
+
+Working title:
+
+> **Same Relevance, Different Research Choices: How Scientific Evidence Shapes LLM Hypothesis Search**
+
+Alternative:
+
+> **Evidence-Conditioned Scientific Choice in Large Language Models**
+
+Outcome-specific titles remain unfrozen until data.
+
+## Strong-paper ladder
+
+```text
+Level 0: lexical/method priming only → KILL
+Level 1: robust matched-evidence high-level choice response
+Level 2: response has a general regularity (baseline/component/abstraction)
+Level 3: controlled response predicts held-out natural RAG
+Level 4: post-training / multi-route geometry reveals broader ML property
+```
+
+## Hard kill conditions
+
+Kill/pivot if:
+
+- source feasibility cannot produce enough multi-route/equipoise blocks;
+- route choice is not human-annotatable reliably;
+- one route is systematically less relevant/plausible;
+- precise effect is scientifically trivial;
+- effects disappear under all anti-priming controls;
+- result is one-model/hand-picked-seed only;
+- controlled effect has no explanatory natural-RAG bridge and no strong mechanism;
+- a direct concurrent paper occupies the combined causal question.
+
+## Research history and AI-use provenance
+
+Every meaningful research/design change is committed as a new round. Preserve:
+
+```text
+source URLs
+research rounds
+git commits
+corpus / seed / treatment hashes
+prompts / model versions
+negative results / failed matching
+human annotation provenance
+deviation logs
+```
+
+This also supports the ICLR AI-use disclosure required for substantial LLM involvement in hypothesis/design/implementation/interpretation.
+
+## Official ICLR references
 
 - https://iclr.cc/Conferences/2027/CallForPapers
 - https://iclr.cc/Conferences/2027/ReviewerGuidelines
+- https://iclr.cc/Conferences/2027/AIPolicyForAuthors
 - https://blog.iclr.cc/2026/09/02/submission-policies-for-iclr-2027/
