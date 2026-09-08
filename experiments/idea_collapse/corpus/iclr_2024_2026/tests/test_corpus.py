@@ -4,9 +4,11 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from complete_corpus import Pipeline, canonical, normalized, parse_official, parse_openreview, read_index, sha, valid_abstract, write_rows
+from finalize_corpus import validate_rows
 
 
 class CorpusTests(unittest.TestCase):
@@ -63,6 +65,19 @@ class CorpusTests(unittest.TestCase):
         self.assertIsNone(row["abstract"])
         self.assertIsNone(row["abstract_sha256"])
 
+    def test_normalized_denominators_and_hashes(self):
+        parsed, _, _ = parse_official(self.raw, self.paper)
+        row = normalized(self.paper, parsed, "official_proceedings", None, sha(self.raw))
+        validate_rows([row], [self.paper])
+        for changed in ([row, row], [], [{**row, "abstract_sha256": "bad"}]):
+            with self.assertRaises(ValueError):
+                validate_rows(changed, [self.paper])
+
+    def test_verified_status_cannot_hide_missing_abstract(self):
+        row = normalized(self.paper)
+        with self.assertRaises(ValueError):
+            validate_rows([{**row, "parse_status": "VERIFIED_ABSTRACT"}], [self.paper])
+
     def test_verified_legacy_cache_never_downloaded(self):
         manifest = self.root / "verified.jsonl.gz"
         with gzip.open(manifest, "wt") as f:
@@ -100,6 +115,44 @@ class CorpusTests(unittest.TestCase):
         self.assertIsNone(error)
         self.assertEqual(parsed["abstract"], "A real abstract.")
         self.assertIsNone(parse_openreview(raw, self.paper, "https://openreview.net/forum?id=OTHER")[0])
+
+    def test_linked_fallback_only_after_bounded_official_failure(self):
+        manifest = self.root / "empty.gz"
+        with gzip.open(manifest, "wt") as handle:
+            handle.write("")
+        pipeline = Pipeline(self.root / "new", self.root / "old", manifest)
+        official = b'<meta name="citation_title" content="Actual paper"><a href="https://openreview.net/forum?id=NOTE">OpenReview</a>'
+        alternative = json.dumps({"notes": [{"id": "NOTE", "content": {"title": {"value": "Actual paper"},
+            "abstract": {"value": "A real linked abstract."}}}]}).encode()
+        calls = []
+        def request(url):
+            calls.append(url)
+            return (200, alternative if "api2.openreview.net" in url else official, None, None)
+        pipeline.request = request
+        with patch("complete_corpus.time.sleep"):
+            row, errors, count = pipeline.acquire(self.paper, network=True)
+        self.assertEqual(count, 4)
+        self.assertTrue(all(url == self.paper["proceedings_abstract_url"] for url in calls[:3]))
+        self.assertEqual(row["source_type"], "linked_openreview_metadata")
+        self.assertEqual(len(list((self.root / "new/_cache/ICLR2025_abc").glob("*.json"))), 4)
+        pipeline.request = lambda _: self.fail("verified fallback must be cached")
+        self.assertEqual(pipeline.acquire(self.paper, network=True)[2], 0)
+
+    def test_failed_http200_parse_is_recoverable_without_redownload(self):
+        manifest = self.root / "empty.gz"
+        with gzip.open(manifest, "wt") as handle:
+            handle.write("")
+        pipeline = Pipeline(self.root / "new", self.root / "old", manifest)
+        directory = pipeline.cache / self.paper["paper_id"]
+        directory.mkdir(parents=True)
+        (directory / "official-01.body").write_bytes(self.raw)
+        (directory / "official-01.json").write_text(json.dumps({"parse_status": "FAILED", "http_status": 200,
+            "body_file": "official-01.body", "source_sha256": sha(self.raw), "source_type": "official_proceedings",
+            "source_retrieved_at": "2026-09-08T00:00:00Z"}))
+        pipeline.request = lambda _: self.fail("retained source bytes should be reparsed")
+        row, _, count = pipeline.acquire(self.paper, network=True)
+        self.assertEqual(count, 0)
+        self.assertEqual(row["parse_status"], "VERIFIED_ABSTRACT")
 
 
 if __name__ == "__main__":
