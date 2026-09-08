@@ -2,6 +2,7 @@ from fractions import Fraction
 import itertools
 from pathlib import Path
 import random
+import shutil
 import sys
 import tempfile
 import unittest
@@ -13,6 +14,21 @@ from recovery_common import digest, encoded, legacy, parse_source, write_jsonl
 
 
 class RecoveryTests(unittest.TestCase):
+    def test_lossless_transport_parts(self):
+        from artifact_parts import split, restore
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.bin"
+            source.write_bytes(bytes(range(256)) * 5)
+            parts = split(source, chunk_size=117)
+            other = root / "restored"
+            other.mkdir()
+            copied = other / parts.name
+            shutil.copytree(parts, copied)
+            restore(copied)
+            self.assertEqual(source.read_bytes(), (other / source.name).read_bytes())
+            self.assertEqual(restore(copied, verify_only=True), digest(source))
+
     def source(self, text="Predicting distribution shift remains challenging for existing learning systems."):
         return {"paper_id": "FOCAL", "title": "A study of distribution shift", "abstract": text,
                 "abstract_sha256": "test", "parse_status": "MEASURED", "hard_errors": []}

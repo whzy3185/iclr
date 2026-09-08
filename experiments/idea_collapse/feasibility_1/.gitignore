@@ -2,3 +2,4 @@
 __pycache__/
 _source_cache/
 *.tmp
+runs/*/retrieval_candidates.csv.gz
