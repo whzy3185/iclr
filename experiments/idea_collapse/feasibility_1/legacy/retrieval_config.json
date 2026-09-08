@@ -1,0 +1,47 @@
+{
+  "matching": {
+    "algorithm": "deterministic greedy nearest-neighbor without replacement, sorted by lowest cost then paper ids",
+    "cost": "0.35*dense_diff + 0.25*reranker_diff + 0.15*length_z_diff + 0.10*date_z_diff + 0.15*topic_distance",
+    "hard_calipers": {
+      "dense_diff_max": 0.1,
+      "reranker_diff_max": 0.35,
+      "topic_distance_max": 1.0
+    },
+    "k_targets": [
+      6,
+      8,
+      12
+    ],
+    "route_clear_threshold": 4
+  },
+  "openreview_api_status": "bulk_api_challenge_required_403_on_2026-09-07; proceedings used as primary source",
+  "packet_simulation": {
+    "alphas": [
+      0,
+      0.25,
+      0.5,
+      0.75,
+      1
+    ],
+    "k_for_primary_balance": 8,
+    "random_seed": 20260907,
+    "realizations_per_block": 6
+  },
+  "retrieval": {
+    "candidate_pool_size": 300,
+    "dense_relevance": "cosine(seed_tfidf, evidence_tfidf)",
+    "relevance_floor_dense": 0.045,
+    "relevance_floor_reranker": 0.08,
+    "reranker_relevance": "BM25-like exact token overlap normalized to 0..1 within seed candidate list",
+    "vectorizer": "deterministic lowercase word unigram+bigram tf-idf with L2 normalization"
+  },
+  "source_universe": "ICLR proceedings Conference abstract pages",
+  "source_urls": {
+    "iclr_2025_index": "https://proceedings.iclr.cc/paper_files/paper/2025",
+    "iclr_2026_index": "https://proceedings.iclr.cc/paper_files/paper/2026"
+  },
+  "years": {
+    "evidence": 2025,
+    "seeds": 2026
+  }
+}
