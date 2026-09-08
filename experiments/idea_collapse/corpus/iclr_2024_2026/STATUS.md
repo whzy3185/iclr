@@ -1,22 +1,42 @@
-# ICLR 2024-2026 Abstract Completion
+# Corpus Completion Report
 
-Scope: data acquisition and validation only. No model/ARS/research experiment.
+Status: COMPLETE
 
-T1 COMPLETE: all three official denominators reconcile; duplicate IDs = 0;
-legacy hash/parse validation failures = 0; network requests during inventory = 0.
+```text
+ICLR2024_OFFICIAL=2260
+ICLR2024_ABSTRACTS=2260
+ICLR2024_MISSING=0
+ICLR2025_OFFICIAL=3703
+ICLR2025_ABSTRACTS=3703
+ICLR2025_MISSING=0
+ICLR2026_OFFICIAL=5351
+ICLR2026_ABSTRACTS=5351
+ICLR2026_MISSING=0
+TOTAL_OFFICIAL=11314
+TOTAL_ABSTRACTS=11314
+TOTAL_MISSING=0
+CORPUS_SHA256=0d0f182481534214ee0255a76b884fd4a959f04cc3d7ba85dbde5869dd5f6807
+TESTS=13 unit tests PASS; 2 byte-identical full passes; 11314 source-byte revalidations; replay requests=0
+```
 
-| Year | Official | Verified cached abstracts | Missing |
-| --- | ---: | ---: | ---: |
-| 2024 | 2260 | 0 | 2260 |
-| 2025 | 3703 | 3703 | 0 |
-| 2026 | 5351 | 3737 | 1614 |
+Every normalized ID reconciles with the frozen official Conference indexes.
+Nonempty abstracts were reparsed from retained source bytes; no title-based
+surrogate or generated abstract was used. All acquisition failures and missing
+rows remain retained. Legacy retrieval timestamps are null when not historically
+known, not fabricated from file modification times. New retrieval timestamps
+are saved in immutable attempt records and reused in the second pass.
 
-Inventory IDs, missing rows and hashes are retained in `inventory/`.
-T2 now completes only the 3874 missing pages. No validated cache entry is replaced.
+New requests in pass 1: 4010; pass 2: 0.
+Source types: {'official_proceedings': 3874, 'official_proceedings_legacy_cache': 7440}.
 
-Legacy cache acquisition timestamps are unknown and stay null. New timestamps
-are persisted with immutable acquisition attempts. Source pages are never
-replaced; missing or invalid inputs receive bounded acquisition attempts.
+No ARS, proposal generation, baseline/treatment, route or model experiment ran.
+STOP after publishing this data-only checkpoint.
 
-Next: complete missing acquisitions, normalize twice, compare
-all normalized bytes, publish exact counts and STOP.
+## Execution
+
+T1 inventory completed without network requests; 7440 verified legacy pages reused.
+T2 acquisition attempted only missing/invalid pages with six workers and at most
+three attempts per source. T3/T4 normalization and identity checks completed.
+T5 two complete pipeline executions compared byte-for-byte. T6 publication follows.
+The inventory and both passes are retained separately; only execution manifest
+request counts differ. See VERIFICATION.json and corpus_manifest.json.
