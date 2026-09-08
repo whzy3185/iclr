@@ -1,0 +1,23 @@
+{
+  "kind": "LOSSLESS_TRANSPORT",
+  "data_changed": false,
+  "targets": [
+    {
+      "artifact": "experiments/idea_collapse/feasibility_1/runs/F0R-9f61bff4538465a7a96f/retrieval_candidates.csv.gz",
+      "sha256": "b910d4065d39370d3a1aec8afe35ed0763ddaf8eb7952fad0f2875fb29773013",
+      "bytes": 37172393,
+      "parts_manifest": "experiments/idea_collapse/feasibility_1/runs/F0R-9f61bff4538465a7a96f/retrieval_candidates.csv.gz.parts/manifest.json",
+      "part_count": 18
+    },
+    {
+      "artifact": "experiments/idea_collapse/feasibility_1/runs/F0R-9f61bff4538465a7a96f-replay/retrieval_candidates.csv.gz",
+      "sha256": "b910d4065d39370d3a1aec8afe35ed0763ddaf8eb7952fad0f2875fb29773013",
+      "bytes": 37172393,
+      "parts_manifest": "experiments/idea_collapse/feasibility_1/runs/F0R-9f61bff4538465a7a96f-replay/retrieval_candidates.csv.gz.parts/manifest.json",
+      "part_count": 18
+    }
+  ],
+  "helper_sha256": "b8c50166a3467a494711c86665ad6964f1851ec140100ae353c866ed8af1827d",
+  "code_remote_commit": "42dce017281a2a2b888405ccb12a87d0acb20b51",
+  "code_local_commit": "78dbb1ebf7bb6a4b74fda96f86e951074ef9f857"
+}

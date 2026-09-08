@@ -1,0 +1,13 @@
+stage,state,count,unit,reason
+official_focal_ids,measured,5351,unique_seed,official index
+source_missing_or_structural_failure,measured,1614,unique_seed,"retained rows, not dropped"
+extractable,measured,3737,unique_seed,source-derived text exists
+explicit_solution_repair_queue,measured,965,unique_seed,not rehabilitated by warning policy
+provisional_source_matching_allowed,measured,2772,unique_seed,human review still pending
+lexical_matching_executed,measured,11088,seed_route_block,four contrasts per allowed seed
+lexical_k4_coverage,measured,2139,unique_seed,at least one route block; provisional only
+lexical_k6_coverage,measured,1545,unique_seed,at least one route block; provisional only
+lexical_k8_coverage,measured,1119,unique_seed,at least one route block; provisional only
+lexical_k12_coverage,measured,611,unique_seed,at least one route block; provisional only
+semantic_matching,not-run,,seed_route_block,backend/covariates unavailable
+human_approved_experimental_blocks,unknown,,seed_route_block,PENDING_REVIEW; not a measured zero

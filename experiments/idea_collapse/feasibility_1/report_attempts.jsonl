@@ -1,0 +1,1 @@
+{"attempt":1,"stage":"report_rendering","state":"failed","error":"ValueError: relative input run path was not in absolute repository-root subpath","source_matching_rerun":false,"raw_source_results_modified":false,"resolution":"Resolve report input paths and resume only byte-identical derived artifacts; retain original test log."}
