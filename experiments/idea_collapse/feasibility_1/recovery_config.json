@@ -1,0 +1,35 @@
+{
+  "version": "recovery-source-only-v1",
+  "run_purpose": "SOURCE_ONLY_RECOVERY",
+  "network_acquisition": false,
+  "scientific_generations": false,
+  "source_snapshot": "runs/R0_20260908",
+  "seed_policy": "preserve legacy masked text; structural errors exclude; similarity warnings remain provisional; explicit focal solutions require repair",
+  "retrieval_backend": "LEXICAL_PROVISIONAL",
+  "lexical_diagnostic": {
+    "regime": "LEXICAL_LEGACY_NO_DATE_PROVISIONAL",
+    "candidate_pool_size": 300,
+    "cosine_floor": 0.045,
+    "bm25_like_floor": 0.08,
+    "cosine_gap": 0.10,
+    "bm25_like_gap": 0.35,
+    "route_filter": "preserved uncalibrated ROUTE_CLEAR descriptor",
+    "cost": "round(1e6 * (.35*cosine_gap + .25*bm25_like_gap + .15*length_z_gap + .15*subfield_disagreement))",
+    "date_component": "OMITTED_UNAVAILABLE_NOT_ZERO",
+    "inheritance": "original snapshot lexical floors/gaps retained; no dense calipers applied to lexical scores"
+  },
+  "matcher": {
+    "library": "networkx==3.6.1",
+    "function": "max_flow_min_cost",
+    "objective": "maximum cardinality, then minimum declared integer cost, then edge-rank sum and deterministic sorted graph order"
+  },
+  "temporal_tiers": ["T0_COMMON_STRICT", "T1_LLAMA_CLEANER", "T2_ALL_ACCEPTED"],
+  "matching_regimes": ["STRICT", "BASE", "RELAXED"],
+  "purity_thresholds": [0.6, 0.7, 0.8],
+  "canonical_grid_note": "MISSING_COVARIATES for unresolved dense relevance, model-token length, first-public dates and numeric purity; NOT_ASSESSED is not 0.70",
+  "k_values": [4, 6, 8, 12],
+  "audit_sampling": "five lowest SHA256 seed IDs in each warning/hard-error/repair/unflagged group; source-only and pre-matching",
+  "packet_audit": "all measured lexical banks; fixed first-k ID-sorted matching slots; cyclic balanced assignment and packet order",
+  "human_reviews": "NOT_PERFORMED",
+  "model_versions": null
+}
