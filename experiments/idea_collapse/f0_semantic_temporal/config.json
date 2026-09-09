@@ -1,0 +1,21 @@
+{
+  "version": "source-side-semantic-temporal-v1",
+  "base_commit": "c5e4391f3af6f7ff67291352c632731d58350293",
+  "task_commit": "b57e83a6c85ce14d6d64b3e041709a2d14906a80",
+  "corpus_sha256": "0d0f182481534214ee0255a76b884fd4a959f04cc3d7ba85dbde5869dd5f6807",
+  "evidence_year": 2025,
+  "seed_year": 2026,
+  "dense": {"id": "BAAI/bge-base-en-v1.5", "revision": "a5beb1e3e68b9ab74eb54cfd186867f64f240e1a", "pooling": "CLS", "normalization": "L2", "query_prefix": "Represent this sentence for searching relevant passages: ", "max_length": 512, "batch_size": 16},
+  "reranker": {"id": "BAAI/bge-reranker-base", "revision": "2cfc18c9415c912f9d8155881c133215df768a70", "max_length": 512, "batch_size": 16},
+  "device": "mps",
+  "dtype": "float16",
+  "inference_repeat_atol": 0.002,
+  "score_storage": "float32 from measured logits; no calibration claim",
+  "candidate_k": 200,
+  "retrieval_input": "NFC whitespace-normalized abstracts only; no source titles",
+  "seed_policy": "preserve available old masked seeds; rebuild formerly missing seeds with identical legacy masking; retain all gate states",
+  "matching": {"reranker_logit_floor": 0.0, "dense_percentile_gap_max": 0.10, "reranker_percentile_gap_max": 0.10, "token_ratio_max": 1.50, "evidence_date_pair_gap_days_max": 365, "evidence_not_after_seed": true, "cost": "micro-units of dense percentile gap + reranker percentile gap + abs(log token ratio) + evidence-date gap/365", "full_abstract_pair_embedding_caliper": false, "route_filter": "existing provisional ROUTE_CLEAR labels", "objective": "max cardinality then min declared integer nuisance cost; stable tie order"},
+  "interpretation": "fixed diagnostic thresholds selected before source-model scores; not human-validated relevance or scientific validity",
+  "f1": {"calibration_target_unique_seeds": 24, "certification_target_unique_seeds": 96, "partition": "sha256(seed_id) modulo 5 == 0 calibration, otherwise certification", "score_strata": [0, 2, 4], "difficulty_strata": [0.2, 0.5], "lexical_disagreement_overlap_cut": 0.25, "selection": "deterministic round-robin source strata, one block per unique seed, no proposal outputs"},
+  "proposal_generations": 0
+}
