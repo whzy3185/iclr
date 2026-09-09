@@ -286,6 +286,8 @@ def build(args):
     save(BASE / "f1_package/F1_PACKAGE_MANIFEST.json", {"calibration_blocks": len(chosen_cal), "certification_blocks": len(chosen_cert),
         "calibration_unique_seeds": len({b["seed_id"] for b in chosen_cal}), "certification_unique_seeds": len({b["seed_id"] for b in chosen_cert}),
         "selection": cfg["f1"], "source_outcomes_only": True, "scientific_generator_outcomes": 0,
+        "partition_hash_definition": "SHA256 of canonical JSON seed_id string with trailing newline; common.hash_value",
+        "sampling_order": "route round-robin, then topic round-robin, then remaining fixed source strata",
         "human_labels": "NOT_RUN", "scientific_validity": "PENDING_HUMAN_REVIEW", "target_is_not_guaranteed": True})
     attrition = [{"stage": "all_2026_seeds", "count": len(seeds), "unit": "unique_seed", "reason": "official source universe"},
         {"stage": "method_masked_records", "count": len(seeds), "unit": "unique_seed", "reason": "existing transform; all records retained"},

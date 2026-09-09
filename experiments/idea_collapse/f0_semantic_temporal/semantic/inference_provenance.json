@@ -1,0 +1,20 @@
+{
+  "base_commit": "c5e4391f3af6f7ff67291352c632731d58350293",
+  "task_commit": "b57e83a6c85ce14d6d64b3e041709a2d14906a80",
+  "encoder_code_sha256": "79b5988fd038b3f0cbb98d29e3ea022a2ab168869cb381d47921b6ee4fc89aa8",
+  "reranker_code_sha256": "ebeec786d6c9c9db0f5d6e3405758a0b40f3cbed3825b080111308ade3acf29d",
+  "model_manifest_sha256": "4dc40c6c2c20fde72bfe46bfe72405f7ecd1759d752c2afdbeb0bbb145240579",
+  "config_sha256": "7fe95d458c75eacfe35c4a09d67b6909c5355dee79e92b64b7b6af152fbf5a10",
+  "execution_started_before_code_checkpoint_commit": true,
+  "code_checkpoint_commit": "89a7c463e1bd9fa104f1ea968b161df1e7987de0",
+  "profile": {
+    "purpose": "synthetic_engineering_only",
+    "pairs": 48,
+    "tokens_per_pair": 512,
+    "seconds": 0.770287332999942,
+    "pairs_per_second": 62.3144091089495,
+    "scores_not_inspected": true
+  },
+  "gpu_host_status": "SSH connection timed out; Mac MPS used without model substitution",
+  "proposal_generations": 0
+}
