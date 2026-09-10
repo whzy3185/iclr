@@ -1,0 +1,44 @@
+{
+  "summary": {
+    "degree_norm_budget": {
+      "active_entities": {"mean": 4.0, "std": 0.0},
+      "gold_entity_recall": {"mean": 1.0, "std": 0.0},
+      "hub_score": {"mean": 0.0, "std": 0.0},
+      "passage_precision_at_k": {"mean": 0.6, "std": 0.0},
+      "passage_recall_at_k": {"mean": 1.0, "std": 0.0},
+      "runtime_ms": {"mean": 2.91976254000474, "std": 0.25652875028549404}
+    },
+    "degree_norm_budget_idf": {
+      "active_entities": {"mean": 4.0, "std": 0.0},
+      "gold_entity_recall": {"mean": 1.0, "std": 0.0},
+      "hub_score": {"mean": 0.0, "std": 0.0},
+      "passage_precision_at_k": {"mean": 0.6, "std": 0.0},
+      "passage_recall_at_k": {"mean": 1.0, "std": 0.0},
+      "runtime_ms": {"mean": 3.0206638600043334, "std": 0.2042539837924202}
+    },
+    "degree_normalized": {
+      "active_entities": {"mean": 4.0, "std": 0.0},
+      "gold_entity_recall": {"mean": 1.0, "std": 0.0},
+      "hub_score": {"mean": 0.0, "std": 0.0},
+      "passage_precision_at_k": {"mean": 0.6, "std": 0.0},
+      "passage_recall_at_k": {"mean": 1.0, "std": 0.0},
+      "runtime_ms": {"mean": 2.917762280005718, "std": 0.13224615171422766}
+    },
+    "paper_like_raw": {
+      "active_entities": {"mean": 289.15, "std": 9.177679335202226},
+      "gold_entity_recall": {"mean": 1.0, "std": 0.0},
+      "hub_score": {"mean": 118424.6737563901, "std": 3106.0054299396807},
+      "passage_precision_at_k": {"mean": 0.6, "std": 0.0},
+      "passage_recall_at_k": {"mean": 1.0, "std": 0.0},
+      "runtime_ms": {"mean": 2.7967306499886035, "std": 0.14152801374537036}
+    }
+  },
+  "top_k": 5,
+  "trials": 100,
+  "variants": {
+    "degree_norm_budget": {"bridge": {"frontier_budget": 32, "keep_seed_scores": true, "max_hops": 3, "normalization": "entity_degree", "threshold": 0.15}, "ppr": {"damping": 0.85, "hub_correction": false, "max_iter": 100, "passage_similarity_weight": 0.05, "tol": 1e-10}},
+    "degree_norm_budget_idf": {"bridge": {"frontier_budget": 32, "keep_seed_scores": true, "max_hops": 3, "normalization": "entity_degree", "threshold": 0.15}, "ppr": {"damping": 0.85, "hub_correction": true, "max_iter": 100, "passage_similarity_weight": 0.05, "tol": 1e-10}},
+    "degree_normalized": {"bridge": {"frontier_budget": null, "keep_seed_scores": true, "max_hops": 3, "normalization": "entity_degree", "threshold": 0.15}, "ppr": {"damping": 0.85, "hub_correction": false, "max_iter": 100, "passage_similarity_weight": 0.05, "tol": 1e-10}},
+    "paper_like_raw": {"bridge": {"frontier_budget": null, "keep_seed_scores": true, "max_hops": 3, "normalization": "none", "threshold": 0.15}, "ppr": {"damping": 0.85, "hub_correction": false, "max_iter": 100, "passage_similarity_weight": 0.05, "tol": 1e-10}}
+  }
+}
