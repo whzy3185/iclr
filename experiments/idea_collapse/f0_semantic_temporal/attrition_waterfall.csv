@@ -1,0 +1,10 @@
+stage,count,unit,reason
+all_2026_seeds,5351,unique_seed,official source universe
+method_masked_records,5351,unique_seed,existing transform; all records retained
+source_gate_allowed,3950,unique_seed,"explicit solution/structural gates, not model-output selection"
+has_reranker_positive_candidate,3603,unique_seed,"fixed logit>=0 diagnostic, not validated truth"
+has_semantic_temporal_route_candidate,3391,unique_seed,known discovered-date order and preserved provisional route filter
+matched_k4,1495,unique_seed,declared nuisance calipers and exact matching
+matched_k6,1253,unique_seed,declared nuisance calipers and exact matching
+matched_k8,1018,unique_seed,declared nuisance calipers and exact matching
+matched_k12,614,unique_seed,declared nuisance calipers and exact matching
