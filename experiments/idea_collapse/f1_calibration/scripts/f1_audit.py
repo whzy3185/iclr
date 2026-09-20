@@ -73,6 +73,16 @@ def write_csv(path: Path, rows, fields):
     write_bytes(path, buf.getvalue().encode())
 
 
+def update_status(text):
+    path = OUT / "STATUS.md"
+    marker = text.split("\n", 1)[0]
+    existing = path.read_text() if path.exists() else ""
+    if marker in existing:
+        return
+    base = existing.split("\nTASK 2=", 1)[0].split("\nTASK 3=", 1)[0].split("\nTASK 4=", 1)[0].split("\nTASK 5=", 1)[0]
+    path.write_bytes((base.rstrip() + "\n" + text).encode())
+
+
 def git(*args):
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
 
@@ -278,8 +288,7 @@ def task2():
     write_csv(OUT / "block_admissibility_audit.csv", block_rows, ["audit_record_id", "block_key", "status", "reviewed_slot_count", "reviewed_slot_scope", "route_1_relevance", "route_2_relevance", "route_relation", "route_1_plausibility", "route_2_plausibility", "distinguishability", "complementarity_or_subsumption", "equipoise", "usable_slot_count", "human_notes"])
     write_csv(OUT / "shadow_audit.csv", shadow, ["shadow_record_id", "shadow_status", "status", "human_false_exclusion_audit", "human_notes"])
     write_bytes(OUT / "REVIEW_FIELDS.md", b"""# F1 Calibration Review Fields\n\nAll human decision fields are intentionally null. This package is an instrument for human calibration, not a model-labelled dataset.\n\n`seed_audit`: review source-faithfulness, duplicated problem text, generic masking, solution-prescribing spans, and comprehensibility. Deterministic diagnostics are provisional observations only.\n\n`paper_relevance_route_audit`: one seed plus one abstract per row. Set DIRECT_RELEVANCE, TRANSFER_ONLY, OFF_TOPIC, or UNCLEAR; assign primary/secondary routes and quote a supporting sentence only after review. Relevance is seed-specific.\n\n`block_admissibility_audit`: A/B order is randomized and decoded only through the private mapping. Review exactly four displayed slots. Do not certify k=8 or k=12 from this file.\n\n`shadow_audit`: developmental false-exclusion audit for six measured-zero and six source-gate-blocked seeds selected by frozen hashes. It is not a pass threshold and is outside the 96-case queue.\n""")
-    status = (OUT / "STATUS.md").read_text() + "\nTASK 2=COMPLETED; human labels remain null; certification queue untouched; displayed slot scope=4.\nNEXT=TASK 3\n"
-    write_bytes(OUT / "STATUS.md", status.encode())
+    update_status("TASK 2=COMPLETED; human labels remain null; certification queue untouched; displayed slot scope=4.\nNEXT=TASK 3\n")
 
 
 def q1_text(text):
@@ -404,8 +413,7 @@ def task3(args):
     write_json(OUT / "token_budget_audit.json", {"tokenizer": model_manifest["reranker"], "max_length": 512, "q0_records": len(q0_rows), "q1_records": len(q1_rows), "records": token_rows, "metrics_status": "PENDING_LABELS", "scientific_proposal_generations": 0})
     manifest.update({"Q0_REUSED_SEEDS": len(variants), "Q1_SCORED_SEEDS": len(variants), "Q1_NEW_RERANKER_PAIRS": len(q1_rows), "Q2_SCORED_OR_PENDING": "PENDING_REVIEW"})
     write_json(OUT / "query_variant_manifest.json", manifest)
-    status = (OUT / "STATUS.md").read_text() + "\nTASK 3=COMPLETED; Q0 reused for 24 seeds; Q1 rescored 24x200; Q2=PENDING_REVIEW.\nNEXT=TASK 4\n"
-    write_bytes(OUT / "STATUS.md", status.encode())
+    update_status("TASK 3=COMPLETED; Q0 reused for 24 seeds; Q1 rescored 24x200; Q2=PENDING_REVIEW.\nNEXT=TASK 4\n")
 
 
 def task4():
@@ -470,8 +478,7 @@ def task4():
         "openreview_challenge_bypassed": False, "arxiv_identity_inferred": False})
     write_json(OUT / "temporal_gap_audit.json", {"calibration_slot_gaps": dict(Counter(gaps)), "all_gaps_equal_minus_354": all(g == -354 for g in gaps),
         "published_global_distribution_claim": "all 790000 F0 scored pairs were -354; this is not a historical cleanliness certificate"})
-    status = (OUT / "STATUS.md").read_text() + f"\nTASK 4=COMPLETED; calibration temporal exposures={len(queue)}; fallback history remains UNKNOWN; all calibration slot gaps -354={all(g == -354 for g in gaps)}.\nNEXT=TASK 5\n"
-    write_bytes(OUT / "STATUS.md", status.encode())
+    update_status(f"TASK 4=COMPLETED; calibration temporal exposures={len(queue)}; fallback history remains UNKNOWN; all calibration slot gaps -354={all(g == -354 for g in gaps)}.\nNEXT=TASK 5\n")
 
 
 def validate():
@@ -499,8 +506,7 @@ def task5():
     state = "READY_FOR_CALIBRATION_REVIEW" if result["all_required"] else "BLOCKED"
     write_bytes(OUT / "F1_CALIBRATION_READINESS.md", (f"# F1 Calibration Readiness\n\nSTATUS={state}\n\nThis is a source-only calibration package. No human labels were imported and no scientific proposal generation was run. The 96 certification records remain untouched.\n\n- Calibration blocks: 24 unique seeds.\n- Visible block review scope: exactly 4 displayed slots per block; no k=8/k=12 certification.\n- Q0: exact F0 query and cached scores reused for 24 seeds.\n- Q1: deterministic query variant scored on 24 x 200 candidates with new cache keys.\n- Q2: PENDING_REVIEW.\n- Temporal history: fallback-only discovered dates; historical cleanliness remains UNKNOWN/UNVERIFIED.\n\n## Tests\n```json\n{json.dumps(result, indent=2, sort_keys=True)}\n```\n").encode())
     write_bytes(OUT / "FINAL_CHECKPOINT.md", (f"# Final Checkpoint\n\nCompleted:\n- Reconciled frozen F0 counts, hashes, semantic/lexical paired comparison, and coverage.\n- Prepared unlabelled seed, paper, block, CSV, field-description, and independent shadow audit materials.\n- Frozen Q0/Q1/Q2 query manifest; reused Q0 and scored Q1 only on 24 calibration seeds.\n- Audited calibration temporal fallback semantics and intrinsic abstract identity cues.\n- Ran source-only validation tests.\n\nNot completed:\n- Human calibration labels and rubric freeze.\n- Formal F1 certification of 96 blocks.\n- ARS, baseline, P0/P1, or scientific proposal generation.\n\nScientific questions remaining:\n- Whether human reviewers judge the seed constructs, source relevance, route distinctions, and temporal/source validity as admissible.\n- Whether Q1 ranking changes correspond to improved relevance after labels exist; current metrics are PENDING_LABELS.\n\nRecommended next experiment:\n- Human review of the 24 calibration blocks, then freeze the rubric before touching the 96-case certification queue.\n\nSTATUS={state}\nSCIENTIFIC_PROPOSAL_GENERATIONS=0\n").encode())
-    status = (OUT / "STATUS.md").read_text() + f"\nTASK 5=COMPLETED\nTESTS={json.dumps(result, sort_keys=True)}\nSTATUS={state}\nBLOCKERS=No human labels; fallback date histories unresolved; Q2 pending review.\nSCIENTIFIC_PROPOSAL_GENERATIONS=0\n"
-    write_bytes(OUT / "STATUS.md", status.encode())
+    update_status(f"TASK 5=COMPLETED\nTESTS={json.dumps(result, sort_keys=True)}\nSTATUS={state}\nBLOCKERS=No human labels; fallback date histories unresolved; Q2 pending review.\nSCIENTIFIC_PROPOSAL_GENERATIONS=0\n")
 
 
 def main():
