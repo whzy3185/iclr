@@ -15,5 +15,5 @@ CERTIFICATION_BLOCKS=96
 NULL_BLOCKED_NOT_RUN=preserved_as_statuses
 DEVIATIONS=No source corpus, F0 cache, model, or threshold changed.
 NEXT=TASK 2
-TASK 3=COMPLETED; Q0 reused for 24 seeds; Q1 rescored 24x200; Q2=PENDING_REVIEW.
-NEXT=TASK 4
+TASK 4=COMPLETED; calibration temporal exposures=165; fallback history remains UNKNOWN; all calibration slot gaps -354=True.
+NEXT=TASK 5
