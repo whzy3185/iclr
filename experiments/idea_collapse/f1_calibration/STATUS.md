@@ -15,5 +15,5 @@ CERTIFICATION_BLOCKS=96
 NULL_BLOCKED_NOT_RUN=preserved_as_statuses
 DEVIATIONS=No source corpus, F0 cache, model, or threshold changed.
 NEXT=TASK 2
-TASK 2=COMPLETED; human labels remain null; certification queue untouched; displayed slot scope=4.
-NEXT=TASK 3
+TASK 3=COMPLETED; Q0 reused for 24 seeds; Q1 rescored 24x200; Q2=PENDING_REVIEW.
+NEXT=TASK 4

@@ -412,7 +412,7 @@ def task3(args):
     write_jsonl(OUT / "q1_reranked_candidates.jsonl", q1_cache)
     write_json(OUT / "token_budget_audit.json", {"tokenizer": model_manifest["reranker"], "max_length": 512, "q0_records": len(q0_rows), "q1_records": len(q1_rows), "records": token_rows, "metrics_status": "PENDING_LABELS", "scientific_proposal_generations": 0})
     manifest.update({"Q0_REUSED_SEEDS": len(variants), "Q1_SCORED_SEEDS": len(variants), "Q1_NEW_RERANKER_PAIRS": len(q1_rows), "Q2_SCORED_OR_PENDING": "PENDING_REVIEW"})
-    write_json(OUT / "query_variant_manifest.json", manifest)
+    write_json(OUT / "query_variant_result_manifest.json", manifest)
     update_status("TASK 3=COMPLETED; Q0 reused for 24 seeds; Q1 rescored 24x200; Q2=PENDING_REVIEW.\nNEXT=TASK 4\n")
 
 
