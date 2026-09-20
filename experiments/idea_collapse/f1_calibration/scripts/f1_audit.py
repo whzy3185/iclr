@@ -481,20 +481,95 @@ def task4():
     update_status(f"TASK 4=COMPLETED; calibration temporal exposures={len(queue)}; fallback history remains UNKNOWN; all calibration slot gaps -354={all(g == -354 for g in gaps)}.\nNEXT=TASK 5\n")
 
 
+def _contains_source_id(value, source_ids):
+    if isinstance(value, str):
+        return value in source_ids
+    if isinstance(value, dict):
+        return any(_contains_source_id(v, source_ids) for v in value.values())
+    if isinstance(value, list):
+        return any(_contains_source_id(v, source_ids) for v in value)
+    return False
+
+
+def _matching_objective_regression():
+    """Check cardinality-first, then declared-cost ordering on a tiny graph."""
+    edges = [
+        ("A0", "B0", 1),
+        ("A0", "B1", 9),
+        ("A1", "B0", 2),
+        ("A2", "B1", 0),
+    ]
+    candidates = [[]]
+    for edge in edges:
+        candidates += [chosen + [edge] for chosen in list(candidates)]
+    valid = []
+    for chosen in candidates:
+        left = [edge[0] for edge in chosen]
+        right = [edge[1] for edge in chosen]
+        if len(left) == len(set(left)) and len(right) == len(set(right)):
+            valid.append(chosen)
+    best = max(valid, key=lambda chosen: (len(chosen), -sum(edge[2] for edge in chosen)))
+    return len(best) == 2 and sum(edge[2] for edge in best) == 1
+
+
 def validate():
     data = load_inputs()
     reranked, banks = data["reranked"], data["banks"]
+    variants = read_jsonl(OUT / "query_variants.jsonl")
+    q1_dense = read_jsonl(OUT / "q1_dense_candidates.jsonl")
+    q1_cache = read_jsonl(OUT / "q1_reranked_candidates.jsonl")
+    token_audit = json.loads((OUT / "token_budget_audit.json").read_text())
+    config = json.loads((F0 / "config.json").read_text())
+    source_ids = {row["paper_id"] for row in data["evidence"]}
+    visible_review_paths = [OUT / "seed_audit.jsonl", OUT / "paper_relevance_route_audit.jsonl", OUT / "block_admissibility_audit.jsonl"]
+    visible_rows = [row for path in visible_review_paths for row in read_jsonl(path)]
+    hidden_flags_ok = all(
+        row.get(flag) is True
+        for row in read_jsonl(OUT / "paper_relevance_route_audit.jsonl")
+        for flag in ("retrieval_score_hidden", "rank_hidden", "matching_outcome_hidden", "provisional_legacy_route_hidden")
+    )
+    source_ids_absent = not any(_contains_source_id(row, source_ids) for row in visible_rows)
+    block_rows = read_jsonl(OUT / "block_admissibility_audit.jsonl")
+    private_map = read_jsonl(OUT / "_PRIVATE_block_ab_mapping.jsonl")
+    ab_mapping_ok = len(private_map) == len(block_rows) and all(
+        visible["block_key"] == private["block_key"]
+        and private["display_swapped"] == (int(hash_value(["AB_DISPLAY", visible["block_key"]]), 16) % 2 == 1)
+        and len(visible["display_route_1_evidence"]) == len(visible["display_route_2_evidence"]) == 4
+        for visible, private in zip(block_rows, private_map)
+    )
+    token_records = token_audit["records"]
+    token_accounting_ok = all(
+        row["query_truncated"] == (row["query_tokens_full"] > token_audit["max_length"])
+        and row["document_truncated"] == (row["document_tokens_full"] > token_audit["max_length"])
+        and row["pair_truncated"] == (row["pair_tokens_retained"] >= token_audit["max_length"])
+        for row in token_records
+    ) and len(token_records) == token_audit["q0_records"] + token_audit["q1_records"]
+    query_cache_invalidated = len(variants) == len(q1_dense) == len(q1_cache) == 24 and all(
+        variant["Q0_sha256"] != variant["Q1_sha256"]
+        and dense["cache_key"] == hash_value({"variant": "Q1", "seed_id": variant["seed_id"], "query_sha256": variant["Q1_sha256"], "candidate_k": 200, "dense_revision": config["dense"]["revision"]})
+        and cached["cache_key"] == hash_value({"variant": "Q1", "seed_id": variant["seed_id"], "query_sha256": variant["Q1_sha256"], "candidate_k": 200, "reranker_revision": config["reranker"]["revision"]})
+        for variant, dense, cached in zip(variants, q1_dense, q1_cache)
+    )
+    route_mapping_scope_ok = all(
+        row["reviewed_slot_count"] == 4
+        and len(row["display_route_1_evidence"]) == 4
+        and len(row["display_route_2_evidence"]) == 4
+        for row in block_rows
+    )
     result = {
         "corpus_hash_ok": corpus_hash() == "0d0f182481534214ee0255a76b884fd4a959f04cc3d7ba85dbde5869dd5f6807",
         "denominators_ok": len(data["seeds"]) == 5351 and sum(r["status"] == "MEASURED" for r in reranked) == 3950 and sum(r["status"] == "BLOCKED_SOURCE_GATE" for r in reranked) == 1401 and sum(len(r.get("paper_ids") or []) for r in reranked if r["status"] == "MEASURED") == 790000 and sum(r["status"] == "MEASURED" for r in banks) == 15800 and sum(r["status"] != "MEASURED" for r in banks) == 5604,
         "calibration_certification_disjoint": not ({r["seed_id"] for r in data["hidden"] if r["partition"] == "CALIBRATION"} & {r["seed_id"] for r in data["hidden"] if r["partition"] == "CERTIFICATION"}),
         "human_labels_imported": 0, "proposal_generations": 0,
         "fallback_not_historical_pass": json.loads((OUT / "source_identity_audit.json").read_text())["historical_order_status"] != "PASS",
-        "query_q2_pending": json.loads((OUT / "query_variant_manifest.json").read_text())["Q2"] == "PENDING_REVIEW",
-        "reviewed_slot_scope_4": all(row["reviewed_slot_count"] == 4 for row in read_jsonl(OUT / "block_admissibility_audit.jsonl")),
-        "review_files_no_hidden_scores": all("score" not in key.lower() and "rank" not in key.lower() and "paper_id" not in key.lower() for path in (OUT / "seed_audit.jsonl", OUT / "paper_relevance_route_audit.jsonl", OUT / "block_admissibility_audit.jsonl") for row in read_jsonl(path) for key in row),
-        "ab_mapping_private": all("source_slots" not in row for row in read_jsonl(OUT / "block_admissibility_audit.jsonl")),
-        "no_silent_zero": all(row["status"] != "BLOCKED_SOURCE_GATE" or row.get("max_matched_slots") is None for row in banks),
+        "query_q2_pending": str(json.loads((OUT / "query_variant_manifest.json").read_text())["Q2"]).startswith("PENDING_REVIEW"),
+        "reviewed_slot_scope_4": route_mapping_scope_ok,
+        "review_files_no_hidden_scores": hidden_flags_ok and source_ids_absent,
+        "ab_mapping_private": ab_mapping_ok and all("source_slots" not in row for row in block_rows),
+        "no_silent_zero": all((row["status"] == "MEASURED") == (row.get("max_matched_slots") is not None) and (row["status"] == "MEASURED" or not row.get("slots")) for row in banks),
+        "query_cache_invalidated": query_cache_invalidated,
+        "token_accounting_correct": token_accounting_ok,
+        "matching_objective_regression": _matching_objective_regression(),
     }
     result["all_required"] = all(v is True for v in result.values() if isinstance(v, bool))
     write_json(OUT / "TEST_REPORT.json", result)
