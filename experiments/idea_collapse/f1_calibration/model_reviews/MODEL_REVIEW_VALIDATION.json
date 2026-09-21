@@ -1,0 +1,192 @@
+{
+  "branch": "codex/f0-semantic-temporal-20260909",
+  "calibration_certification_split_unchanged": true,
+  "distributions": {
+    "block": {
+      "equipoise": {
+        "NO": 1,
+        "UNCLEAR": 6,
+        "YES": 17
+      },
+      "route_1_scientifically_plausible": {
+        "YES": 24
+      },
+      "route_2_scientifically_plausible": {
+        "YES": 24
+      },
+      "route_relationship": {
+        "COMPLEMENTARY": 23,
+        "SUBSUMED": 1
+      },
+      "routes_distinguishable": {
+        "UNCLEAR": 1,
+        "YES": 23
+      },
+      "routes_non_subsumed": {
+        "NO": 1,
+        "YES": 23
+      },
+      "usable_for_intervention": {
+        "NO": 4,
+        "UNCLEAR": 3,
+        "YES": 17
+      },
+      "usable_slot_count": {
+        "1": 3,
+        "2": 4,
+        "3": 10,
+        "4": 7
+      }
+    },
+    "paper": {
+      "primary_scientific_contribution": {
+        "BUILD": 101,
+        "DIAGNOSE": 25,
+        "EXPLAIN": 25,
+        "MEASURE": 9,
+        "OTHER": 32
+      },
+      "relevance_label": {
+        "DIRECT_RELEVANCE": 30,
+        "OFF_TOPIC": 75,
+        "TRANSFER_ONLY": 87
+      },
+      "reviewer_confidence": {
+        "HIGH": 105,
+        "MEDIUM": 87
+      },
+      "secondary_scientific_contribution": {
+        "": 192
+      }
+    },
+    "seed": {
+      "comprehensible": {
+        "YES": 24
+      },
+      "duplicated_or_malformed": {
+        "NO": 13,
+        "YES": 11
+      },
+      "failure_types": {
+        "": 5,
+        "DUPLICATED_OR_MALFORMED": 3,
+        "SEED_LEAKAGE": 4,
+        "SEED_LEAKAGE;DUPLICATED_OR_MALFORMED": 1,
+        "SEED_LEAKAGE;SEED_NOT_OPEN": 3,
+        "SEED_LEAKAGE;SEED_NOT_OPEN;DUPLICATED_OR_MALFORMED": 7,
+        "SEED_NOT_OPEN": 1
+      },
+      "method_neutral": {
+        "NO": 13,
+        "YES": 11
+      },
+      "multi_route_open": {
+        "NO": 11,
+        "YES": 13
+      },
+      "seed_decision": {
+        "ADJUDICATION": 4,
+        "FAIL": 15,
+        "PASS": 5
+      },
+      "solution_leakage": {
+        "NONE": 9,
+        "POSSIBLE": 5,
+        "PRESENT": 10
+      },
+      "source_faithful": {
+        "YES": 24
+      }
+    }
+  },
+  "errors": [],
+  "f1_data_freeze_commit": "742c2a84819e122429cfa5b5973c173c734714b3",
+  "input_commit": "37f52f080aebd4fb806b1a8757eccb8b39c9e283",
+  "input_freeze_hash_check": {
+    "actual_sha256": "b603872824592c286ba5bb5b327a4938d567ae042842f17d76730a3f7dee5be6",
+    "expected_sha256": "b603872824592c286ba5bb5b327a4938d567ae042842f17d76730a3f7dee5be6",
+    "matches": true
+  },
+  "input_manifest_hash_checks": {
+    "experiments/idea_collapse/f1_calibration/F1_CALIBRATION_REVIEW_INSTRUCTIONS.md": {
+      "actual_sha256": "5c5f6b8fe12286fc2af7d093bdcbaa54e5a3c48aba5360c3ad05875674244a16",
+      "expected_sha256": "5c5f6b8fe12286fc2af7d093bdcbaa54e5a3c48aba5360c3ad05875674244a16",
+      "matches": true
+    },
+    "experiments/idea_collapse/f1_calibration/reviewer_package/block_review.csv": {
+      "actual_sha256": "358b88b8764ead87f2357db514b8ca4b03d68ebb55143c95725698f0fbebbd55",
+      "expected_sha256": "358b88b8764ead87f2357db514b8ca4b03d68ebb55143c95725698f0fbebbd55",
+      "matches": true
+    },
+    "experiments/idea_collapse/f1_calibration/reviewer_package/paper_review.csv": {
+      "actual_sha256": "81a2d523ce5ff1eb7d79fdc52f3223e9884bf9acc6c427db9a37f9f91d3248e3",
+      "expected_sha256": "81a2d523ce5ff1eb7d79fdc52f3223e9884bf9acc6c427db9a37f9f91d3248e3",
+      "matches": true
+    },
+    "experiments/idea_collapse/f1_calibration/reviewer_package/seed_review.csv": {
+      "actual_sha256": "00dd73ff0a0f885062c666204467f10ad7d0e13374c3ff94dd5c7e70958cb8eb",
+      "expected_sha256": "00dd73ff0a0f885062c666204467f10ad7d0e13374c3ff94dd5c7e70958cb8eb",
+      "matches": true
+    }
+  },
+  "manifest_assertions_all_true": true,
+  "process_attestations": {
+    "calibration_human_labels_imported": 0,
+    "certification_blocks_accessed": false,
+    "certification_blocks_opened_for_rule_adjustment": 0,
+    "hard_stop": "ACTIVE",
+    "private_mapping_accessed": false,
+    "scientific_proposal_generations": 0
+  },
+  "repository": "whzy3185/iclr",
+  "roles": {
+    "block": {
+      "actual_rows": 24,
+      "errors": [],
+      "expected_rows": 24,
+      "field_names_and_order_unchanged": true,
+      "frozen_fields_unchanged": true,
+      "output": "experiments/idea_collapse/f1_calibration/model_reviews/block_review_R03.csv",
+      "output_sha256": "62426c3ac373543ba2110200b3760b884f59ab0aa5c6fa7e792dd79477045cd7",
+      "review_item_ids_unchanged": true,
+      "source": "experiments/idea_collapse/f1_calibration/reviewer_package/block_review.csv",
+      "valid": true
+    },
+    "paper": {
+      "actual_rows": 192,
+      "errors": [],
+      "expected_rows": 192,
+      "field_names_and_order_unchanged": true,
+      "frozen_fields_unchanged": true,
+      "output": "experiments/idea_collapse/f1_calibration/model_reviews/paper_review_R02.csv",
+      "output_sha256": "2b8369bf4a34304d10527a6ce3ed2c059a3592f71ccd463dde697aeede985401",
+      "review_item_ids_unchanged": true,
+      "source": "experiments/idea_collapse/f1_calibration/reviewer_package/paper_review.csv",
+      "valid": true
+    },
+    "seed": {
+      "actual_rows": 24,
+      "errors": [],
+      "expected_rows": 24,
+      "field_names_and_order_unchanged": true,
+      "frozen_fields_unchanged": true,
+      "output": "experiments/idea_collapse/f1_calibration/model_reviews/seed_review_R01.csv",
+      "output_sha256": "067bc71b53e52aa5f9a2b4a97aa48e5f646f5cc00c8e0f7987a9fbd5cd119029",
+      "review_item_ids_unchanged": true,
+      "source": "experiments/idea_collapse/f1_calibration/reviewer_package/seed_review.csv",
+      "valid": true
+    }
+  },
+  "rubric_ambiguities": [
+    "reviewer_confidence has no explicit enum in F1_CALIBRATION_REVIEW_INSTRUCTIONS.md; this model pre-review uses HIGH/MEDIUM/LOW/UNCLEAR.",
+    "secondary_scientific_contribution is described as optional and may remain blank."
+  ],
+  "schema_version": "f1-model-review-validation-v1",
+  "status": "PASS",
+  "task1_commit": "cbf502ec173a69d11784a3df5e95dc1be1552263",
+  "within_package_consistency": {
+    "repeated_abstract_contributions_consistent": true,
+    "repeated_abstract_groups": 22,
+    "unique_anonymous_abstracts": 165
+  }
+}

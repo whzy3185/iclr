@@ -1,0 +1,95 @@
+{
+  "schema_version": "f1-model-review-provenance-v1",
+  "repository": "whzy3185/iclr",
+  "branch": "codex/f0-semantic-temporal-20260909",
+  "input_commit": "37f52f080aebd4fb806b1a8757eccb8b39c9e283",
+  "task1_commit": "cbf502ec173a69d11784a3df5e95dc1be1552263",
+  "f1_data_freeze_commit": "742c2a84819e122429cfa5b5973c173c734714b3",
+  "review_instruction_identity": {
+    "path": "experiments/idea_collapse/f1_calibration/F1_CALIBRATION_REVIEW_INSTRUCTIONS.md",
+    "sha256": "5c5f6b8fe12286fc2af7d093bdcbaa54e5a3c48aba5360c3ad05875674244a16"
+  },
+  "review_package_manifest_identity": {
+    "path": "experiments/idea_collapse/f1_calibration/reviewer_package/REVIEW_PACKAGE_MANIFEST.json",
+    "sha256": "06ceb528edf2d6678792dd3aade270d50dda40cbbbe263ab812680314da3147a"
+  },
+  "orchestrator_session_identifier": "01a0c460-0bb2-7070-a437-0f7ad7ef3001",
+  "orchestration_started_at": "2026-09-21T14:38:22Z",
+  "orchestration_finished_at": "2026-09-21T14:44:49Z",
+  "review_runs": [
+    {
+      "reviewer_id": "R01",
+      "role": "Reviewer S — Seed Review",
+      "execution_session_identifier": "/root/reviewer_seed_r01",
+      "model_product_identity": "OpenAI Codex in ChatGPT Work Mode (GPT-5 family; exact deployment identifier not exposed)",
+      "input_files": [
+        "experiments/idea_collapse/f1_calibration/F1_CALIBRATION_REVIEW_INSTRUCTIONS.md",
+        "experiments/idea_collapse/f1_calibration/reviewer_package/seed_review.csv"
+      ],
+      "output_file": "experiments/idea_collapse/f1_calibration/model_reviews/seed_review_R01.csv",
+      "started_at": "2026-09-21T14:38:22Z",
+      "finished_at": null
+    },
+    {
+      "reviewer_id": "R02",
+      "role": "Reviewer P — Paper Review",
+      "execution_session_identifier": "/root/reviewer_paper_r02",
+      "model_product_identity": "OpenAI Codex in ChatGPT Work Mode (GPT-5 family; exact deployment identifier not exposed)",
+      "input_files": [
+        "experiments/idea_collapse/f1_calibration/F1_CALIBRATION_REVIEW_INSTRUCTIONS.md",
+        "experiments/idea_collapse/f1_calibration/reviewer_package/paper_review.csv"
+      ],
+      "output_file": "experiments/idea_collapse/f1_calibration/model_reviews/paper_review_R02.csv",
+      "started_at": "2026-09-21T14:38:22Z",
+      "finished_at": null
+    },
+    {
+      "reviewer_id": "R03",
+      "role": "Reviewer B — Block Review",
+      "execution_session_identifier": "/root/reviewer_block_r03",
+      "model_product_identity": "OpenAI Codex in ChatGPT Work Mode (GPT-5 family; exact deployment identifier not exposed)",
+      "input_files": [
+        "experiments/idea_collapse/f1_calibration/F1_CALIBRATION_REVIEW_INSTRUCTIONS.md",
+        "experiments/idea_collapse/f1_calibration/reviewer_package/block_review.csv"
+      ],
+      "output_file": "experiments/idea_collapse/f1_calibration/model_reviews/block_review_R03.csv",
+      "started_at": "2026-09-21T14:38:22Z",
+      "finished_at": null
+    }
+  ],
+  "blindness_constraints": [
+    "Each reviewer ran in a fresh isolated agent context and received only the common instructions plus its role-specific CSV.",
+    "No prior verdict was passed between Seed, Paper, and Block reviewers.",
+    "No hidden A/B identity, source identity, retrieval/reranker score, rank, match status, provisional route annotation, hidden provenance, or certification case was used.",
+    "Intrinsic abstract cues were read only as displayed text and were not used for external identity lookup.",
+    "The deterministic Route 1/Route 2 display order was preserved and not decoded."
+  ],
+  "files_explicitly_not_accessed": [
+    "experiments/idea_collapse/f1_calibration/_PRIVATE_block_ab_mapping.jsonl",
+    "experiments/idea_collapse/f0_semantic_temporal/f1_package/F1_HIDDEN_PROVENANCE.jsonl",
+    "experiments/idea_collapse/f0_semantic_temporal/f1_package/F1_CERTIFICATION_CANDIDATES.jsonl",
+    "certification cases or blocks",
+    "retrieval/reranker score and rank sources",
+    "provisional route annotations"
+  ],
+  "limitations": [
+    "These are model pre-review labels, not human calibration evidence and not a substitute for the protocol's human gate.",
+    "The exact deployed model build and per-role completion timestamps were not exposed; only the available product/model family, isolated execution identifiers, and orchestration window are recorded.",
+    "The review instructions do not define an enum for reviewer_confidence; R02 used HIGH and MEDIUM and this ambiguity is preserved in validation and summary.",
+    "secondary_scientific_contribution is explicitly optional and R02 left it blank for all rows.",
+    "Repository acquisition used exact-commit file reads because a full clone was throughput-limited; all frozen reviewer inputs were checked against manifest SHA-256 values before review."
+  ],
+  "output_sha256": {
+    "seed_review_R01.csv": "067bc71b53e52aa5f9a2b4a97aa48e5f646f5cc00c8e0f7987a9fbd5cd119029",
+    "paper_review_R02.csv": "2b8369bf4a34304d10527a6ce3ed2c059a3592f71ccd463dde697aeede985401",
+    "block_review_R03.csv": "62426c3ac373543ba2110200b3760b884f59ab0aa5c6fa7e792dd79477045cd7",
+    "MODEL_REVIEW_VALIDATION.json": "1abcbec1ad921eb939ddde1c827a301e04c22f3290cda85a5131ced471d36727",
+    "MODEL_REVIEW_SUMMARY.md": "e8d1fea027e182bb07da88401ee9e74c50b7531d7b0edea6e1cc5aab304dc8e4"
+  },
+  "protocol_state": {
+    "calibration_human_labels_imported": 0,
+    "certification_blocks_opened_for_rule_adjustment": 0,
+    "scientific_proposal_generations": 0,
+    "hard_stop": "ACTIVE"
+  }
+}
